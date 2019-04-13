@@ -7,15 +7,15 @@
 	<title>GRAFICAS S.A.S</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="theme-color" content="#808080">	
+	<meta name="theme-color" content="#808080">
 	<link rel="stylesheet" href="estilos.css">
-	<script language="JavaScript"> 
-		function pregunta(){ 
-		if (confirm('¿Estas seguro de enviar este Comentario?')){ 
-       document.contactanos.submit() 
+	<script language="JavaScript">
+		function pregunta() {
+			if (confirm('¿Estas seguro de enviar este Comentario?')) {
+				document.contactanos.submit()
+			}
 		} 
-	} 
-	</script> 
+	</script>
 </head>
 
 <body>
@@ -41,30 +41,30 @@
 			<!--AQUI VA EL FORM-->
 			<form name="contactanos" action="" method="">
 				<div>
-					<label for="nombre"> Nombres:</label><br/>				
+					<label for="nombre"> Nombres:</label><br />
 					<input type="text" class="formula" id="nombre" placeholder="Ingrese Nombres">
-				<div>
-					<label for="apellidos"> Apellidos:</label><br/>				
-					<input type="text" class="formula" id="apellidos"placeholder="Ingrese Apellidos">
-				</div>
-				<div>
-					<label for="telefono"> Telefono:</label><br/>				
-					<input type="text" class="formula" id="telefono" placeholder="Ingrese Telefono">
-				</div>
-				<div>
-					<label for="correo"> Dirección de Correo:</label><br/>				
-					<input type="email" class="formula" id="correo" placeholder="Ingrese Dirección e-mail">
-				</div>
-				<div>
-					<label for="comentario"> Comentario o Sugerencia:</label><br/></textarea><br/>
-					<textarea class="formula" placeholder="Comentario o Sugerencia"></textarea><br/>
-					<input type="button" class="btn" onclick="pregunta()" value="Enviar Comentario">
-				</div>
-				<div>
-					<p class="centrarcontenido">				
-					
-				</p>
-				</div>
+					<div>
+						<label for="apellidos"> Apellidos:</label><br />
+						<input type="text" class="formula" id="apellidos" placeholder="Ingrese Apellidos">
+					</div>
+					<div>
+						<label for="telefono"> Telefono:</label><br />
+						<input type="text" class="formula" id="telefono" placeholder="Ingrese Telefono">
+					</div>
+					<div>
+						<label for="correo"> Dirección de Correo:</label><br />
+						<input type="email" class="formula" id="correo" placeholder="Ingrese Dirección e-mail">
+					</div>
+					<div>
+						<label for="comentario"> Comentario o Sugerencia:</label><br /></textarea><br />
+						<textarea class="formula" placeholder="Comentario o Sugerencia"></textarea><br />
+						<input type="button" class="btn" onclick="pregunta()" value="Enviar Comentario">
+					</div>
+					<div>
+						<p class="centrarcontenido">
+
+						</p>
+					</div>
 			</form>
 		</div>
 
