@@ -1,0 +1,183 @@
+/*Codigo CSS*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {	
+	min-height: 100vh;
+    background-image: url(imagenes/composicion.jpg);
+    background-repeat: no-repeat;
+	background-size:cover ;	
+}
+
+#contenedorGlobal {
+	background-color: hsla(0, 0%, 50%, 0.678);	
+	padding-bottom: 20px;
+}
+
+#contenedorGlobal div{	
+	margin-left: 15px;
+	margin-right: 15px;
+	border-radius: 10px;
+}
+
+/*BEGIN CABECERA*/
+
+#cabecera {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+img {
+
+	width: 20%;   
+	max-width: 150px;
+
+    padding: 10px;
+}
+
+/*FIN CABECERA*/
+
+/*BEGIN EMPRESA*/
+
+#empresa {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    border: white 1px solid;
+}
+
+#empresa a{
+	display: inline-block;	
+
+	padding: 10px;
+	margin: 10px;
+
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 0.541);
+	
+	color: black;
+	text-decoration: none;
+	text-align: center;
+}
+
+#empresa a:hover{
+	background-color: rgb(242, 255, 127);
+}
+
+#empresa a:active{
+	background-color: rgb(127, 182, 255);
+}
+
+
+/*END EMPRESA*/
+
+#Informacion {
+	text-align: center;
+
+	margin-top: 10px;
+	min-height: 65vh; 
+	
+
+    border: white 1px solid;
+}
+
+#pie {
+	text-align: center;
+	
+	margin-top: 10px;
+	margin-bottom: 20px;
+	min-height: 7vh; 	
+
+    border: white 1px solid;
+}
+
+/*BEGIN SERVICIOS*/
+
+.contTarjetas{
+	margin: 40px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.imgServ{
+	width: 30%;
+}
+
+.imgServContenedor{
+
+	display: inline-block;
+	overflow: hidden;
+	width: 25%;
+
+	background-color: azure;
+
+}
+
+.imgServContenedor .imgServ{	
+	min-width: 100%;
+	padding: 0px;
+}
+
+/*END SERVICIOS*/
+
+.imgServ1{
+	width: 60%;
+	
+}
+
+.imgServContenedor .imgServ1{	
+	min-width: 200%;
+	padding: 0px;
+}
+/*FORMULARIO*/
+
+form{
+	background-color: beige;
+	margin-left:50px;
+	color:#999;	
+	padding: 10px;
+	font-size: 1.2em;
+	width: 80%;
+	
+}
+
+input, textarea{
+	border: 0;
+	outline:none;
+}
+
+.btn {
+	border-radius: 3px;
+	display: inline-block;
+	padding: 10px 10px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+	color:white;
+	background-color: rgb(0, 128, 128);
+}
+
+
+.btn:hover{
+	background-color: rgb(87, 165, 42);
+}
+.btn:active{
+	background-color: blueviolet;
+}
+
+.formula{
+	border:solid 1px #ccc;
+	padding: 10px;
+}
+.formula:focus{
+	border-color: aquamarine;
+}
+
