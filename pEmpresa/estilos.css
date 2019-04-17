@@ -115,8 +115,7 @@ img {
     background-color: transparent;
     background-position: center center;
     border: 1px solid #fff;
-    display: block;
-    float: center;
+    display: block;   
     height: 40px;
     margin-right: 1.3em;
     width: 40px;

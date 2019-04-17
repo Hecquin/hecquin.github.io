@@ -5,14 +5,18 @@
 <head>
 	<meta charset="utf-8">
 	<title>GRAFICAS S.A.S</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />-->
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="theme-color" content="#808080">
 	<link rel="stylesheet" href="estilos.css">
-	<script language="JavaScript">
-		function pregunta() {
+	
+	<script >
+		function pregunta(e) {
 			if (confirm('¿Estas seguro de enviar este Comentario?')) {
 				document.contactanos.submit()
+			}
+			else {
+				e.preventDefault();
 			}
 		} 
 	</script>
@@ -23,7 +27,7 @@
 
 		<div id="cabecera">
 			<img id="logo" src="imagenes/logo.jpg" alt="Logotipo Empresa">
-			<h1 id="nombre">GRÁFICAS S.A.S</h1>
+			<h1>GRÁFICAS S.A.S</h1>
 		</div>
 		<!--Comienza contenedor Empresa-->
 		<div id="empresa">
@@ -75,7 +79,7 @@
 
 				<ul class="nav-items">
 
-					<li class="mobile"><span>Página Inicio</span></a>
+					<li class="mobile"><span>Página Inicio</span>
 						<ul>
 							<li class="enlace"><a href="graficasSAS.html"> <span>Inicio</span></a></li>
 						</ul>
@@ -97,7 +101,7 @@
 						</ul>
 					</li>
 
-					<li class="mobile"><span>Comentarios</span></a>
+					<li class="mobile"><span>Comentarios</span>
 						<ul>
 							<li class="enlace"><a href="contactanos2.html"> <span>Contactanos</span></a></li>
 						</ul>
@@ -119,7 +123,7 @@
 				Cuenta con nosotros le damos imágen a tu empresa.
 			</p><br>
 			<!--AQUI VA EL FORM-->
-			<form name="contactanos" action="" method="">
+			<form name="contactanos">
 				<div>
 					<label for="nombre"> Nombres:</label><br>
 					<input type="text" class="formula" id="nombre" placeholder="Ingrese Nombres">
@@ -138,8 +142,8 @@
 				</div>
 				<div>
 					<label for="comentario"> Comentario o Sugerencia:</label><br>
-					<textarea class="formula" placeholder="Comentario o Sugerencia"></textarea><br>
-					<input type="button" class="btn" onclick="pregunta()" value="Enviar Comentario">
+					<textarea class="formula" id="comentario" placeholder="Comentario o Sugerencia"></textarea><br>
+					<input type="button" class="btn" onclick="pregunta(event)" value="Enviar Comentario">
 				</div>
 				<div>
 					<p class="centrarcontenido">
