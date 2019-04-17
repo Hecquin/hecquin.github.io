@@ -1,4 +1,4 @@
-<!--Pagina Contactanos-->
+<!--Esta es la página de inicio-->
 <!doctype html>
 <html lang="es">
 
@@ -9,13 +9,6 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="theme-color" content="#808080">
 	<link rel="stylesheet" href="estilos.css">
-	<script language="JavaScript">
-		function pregunta() {
-			if (confirm('¿Estas seguro de enviar este Comentario?')) {
-				document.contactanos.submit()
-			}
-		} 
-	</script>
 </head>
 
 <body>
@@ -25,6 +18,7 @@
 			<img id="logo" src="imagenes/logo.jpg" alt="Logotipo Empresa">
 			<h1 id="nombre">GRÁFICAS S.A.S</h1>
 		</div>
+
 		<!--Comienza contenedor Empresa-->
 		<div id="empresa">
 			<div class="dropdown">
@@ -70,6 +64,7 @@
 				<div class="control-menu">
 					<a href="#navigation" class="open"><span>MENU</span></a>
 					<a href="#" class="close"><span>CERRAR</span></a>
+
 				</div>
 
 
@@ -111,43 +106,26 @@
 
 		</div>
 
-		<!--Fin empresa-->
+<!--Fin empresa-->
+
 
 		<div id="Informacion">
 			<h1 class="hinfo">Impresiones Digitales</h1>
 			<p class="paginfo">
 				Cuenta con nosotros le damos imágen a tu empresa.
-			</p><br>
-			<!--AQUI VA EL FORM-->
-			<form name="contactanos" action="" method="">
-				<div>
-					<label for="nombre"> Nombres:</label><br>
-					<input type="text" class="formula" id="nombre" placeholder="Ingrese Nombres">
-				</div>
-				<div>
-					<label for="apellidos"> Apellidos:</label><br>
-					<input type="text" class="formula" id="apellidos" placeholder="Ingrese Apellidos">
-				</div>
-				<div>
-					<label for="telefono">Telefono:</label><br>
-					<input type="text" class="formula" id="telefono" placeholder="Ingrese Telefono">
-				</div>
-				<div>
-					<label for="correo">Dirección de Correo:</label><br>
-					<input type="email" class="formula" id="correo" placeholder="Ingrese Dirección e-mail">
-				</div>
-				<div>
-					<label for="comentario"> Comentario o Sugerencia:</label><br>
-					<textarea class="formula" placeholder="Comentario o Sugerencia"></textarea><br>
-					<input type="button" class="btn" onclick="pregunta()" value="Enviar Comentario">
-				</div>
-				<div>
-					<p class="centrarcontenido">
+			</p>
 
+			<div class="contTarjetas">
+				<div class="imgServContenedor">
+					<img class="imgServ" src="imagenes/pendon.jpg" alt="Pendones Publitarios">
+					<p class="paginfo" >
+						Haz publicidad con altura donde quieras con<b> Pendones.</b>
 					</p>
 				</div>
 
-			</form>
+				
+			</div>
+
 		</div>
 
 		<div id="pie">
