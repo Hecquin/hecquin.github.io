@@ -1,0 +1,71 @@
+/* Estilos específicos para la página de inicio */
+.cabecera-principal {
+    background: #2c3e50;
+    padding: 1rem;
+}
+
+.menu-navegacion ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.menu-navegacion a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.menu-navegacion a:hover {
+    background: #34495e;
+}
+
+.contenido-principal {
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.bienvenida h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.destacado {
+    background: #ecf0f1;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.boton-jugar {
+    display: inline-block;
+    background: #27ae60;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+}
+
+.boton-jugar:hover {
+    background: #219a52;
+}
+
+.pie-pagina {
+    text-align: center;
+    padding: 1rem;
+    background: #2c3e50;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

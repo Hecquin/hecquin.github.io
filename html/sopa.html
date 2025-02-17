@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sopa de Letras Interactiva</title>
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="../estilos/sopa.css">
+</head>
+<body>
+    <!-- Contenedor principal -->
+    <div id="contenedor-principal">
+        <!-- Encabezado -->
+        <h1>Sopa de Letras Dinámica</h1>
+        
+        <!-- Selector de tema -->
+        <div id="selector-tema">
+            <label for="temas">Elige un tema:</label>
+            <select id="temas">
+                <option value="general">general</option>
+                <option value="frutas">Frutas</option>
+                <option value="verduras">Verduras</option>
+            </select>
+        </div>
+
+        <!-- Contenedor de la sopa de letras -->
+        <div id="contenedor-sopa"></div>
+
+        <!-- Mensajes/estado -->
+        <div id="estado"></div>
+    </div>
+
+    <!-- Enlace al archivo JavaScript -->
+    <script src="../javascript/sopa.js"></script>
+</body>
+</html>
