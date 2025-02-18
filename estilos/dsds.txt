@@ -1,13 +1,11 @@
 #contenedor-principal {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 90%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
   font-family: Arial, sans-serif;
 }
 
 #selector-tema {
-  height: 10%;
   margin: 20px 0;
 }
 
@@ -18,17 +16,18 @@
 
 #contenedor-sopa {
   display: grid;
-  grid-template-columns: repeat(16, 1fr); /* Asegurar 16 columnas */
+  grid-template-columns: repeat(16, 1fr); /* Siempre 16 columnas */
   gap: 2px;
-  max-width: 100%;
-  height: 60%;
   background: #fff;
-  margin: 20px 0;
-  position: relative; /* Necesario para posicionar los SVG */
+  margin: 20px auto;
+  width: 100%; /* Ocupar todo el ancho disponible */
+  max-width: 100vw; /* Se adapta al ancho de la pantalla */
+  overflow: hidden; /* Evita desbordamientos */
 }
 
 .celda-sopa {
-  height: 40px;
+  width: calc(100% / 16 - 2px); /* Ajuste dinámico */
+  height: calc(100vw / 16 - 3px); /* Siempre cuadradas */
   border: 1px solid #ccc;
   display: flex;
   align-items: center;
@@ -36,11 +35,26 @@
   font-weight: bold;
   background: #f8f8f8;
   user-select: none;
+  aspect-ratio: 1; /* Cuadradas siempre */
+  font-size: 1rem; /* Tamaño inicial del texto */
   transition: background-color 0.2s;
 }
+/* 📌 Para pantallas menores a 734px */
+@media (max-width: 734px) {
+  .celda-sopa {
+    width: calc(100vw / 16 - 2px); /* Ajuste según la pantalla */
+    font-size: 0.8rem; /* Reduce el tamaño del texto */
+  }
+}
 
+/* 📌 Para pantallas menores a 500px (móviles más pequeños) */
+@media (max-width: 500px) {
+  .celda-sopa {
+    width: calc(100vw / 16 - 1px); /* Se adapta aún más */
+    font-size: 0.6rem; /* Reduce más el texto si es necesario */
+  }
+}
 #estado {
-  max-height: 20%;
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ddd;
@@ -51,12 +65,11 @@
 }
 
 .palabras-lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 8px;
-  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
 }
-
 .palabra-item {
   padding: 5px 10px;
   background: #4caf50;

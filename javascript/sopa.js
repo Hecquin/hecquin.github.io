@@ -312,7 +312,7 @@ function rellenarEspaciosVacios(grid) {
 function renderizarSopa(grid) {
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
-  contenedor.style.gridTemplateColumns = `repeat(${TAMANO_GRILLA}, 40px)`;
+  contenedor.style.gridTemplateColumns = `repeat(${TAMANO_GRILLA}, 1fr)`;
 
   grid.forEach((fila, y) => {
     fila.forEach((celdaInfo, x) => {
