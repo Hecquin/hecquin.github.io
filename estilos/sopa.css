@@ -1,3 +1,8 @@
+html,
+html * {
+  box-sizing: border-box;
+}
+
 #contenedor-principal {
   max-width: 100%;
   max-height: 100%;
@@ -16,19 +21,19 @@
   margin-left: 10px;
 }
 
-#contenedor-sopa {
-  display: grid;
-  grid-template-columns: repeat(16, 1fr); /* Asegurar 16 columnas */
-  gap: 2px;
+/* #contenedor-sopa {
   max-width: 100%;
   height: 60%;
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 2px;
   background: #fff;
   margin: 20px 0;
-  position: relative; /* Necesario para posicionar los SVG */
-}
+  touch-action: none; 
+  overflow: hidden;
+} */
 
-.celda-sopa {
-  height: 40px;
+/* .celda-sopa {
   border: 1px solid #ccc;
   display: flex;
   align-items: center;
@@ -37,8 +42,34 @@
   background: #f8f8f8;
   user-select: none;
   transition: background-color 0.2s;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent; 
+} */
+#contenedor-sopa {
+  grid-template-columns: repeat(16, 1fr);
+  width: 100%;
+  display: grid;
+  gap: 1px;
+  margin: 0 auto;
+  aspect-ratio: 1; /* Fuerza relación cuadrada */
+  background: #fff;
+  touch-action: none;
 }
 
+.celda-sopa {
+  
+  grid-column: span 1;  
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: clamp(12px, 1.8vmin, 24px); /* Escala con el viewport */
+  font-weight: bold;
+  user-select: none;
+  aspect-ratio: 1; /* Celda cuadrada */
+}
 #estado {
   max-height: 20%;
   margin-top: 20px;
@@ -133,5 +164,11 @@
   }
   100% {
     transform: translateX(0);
+  }
+}
+
+@media (min-width: 1024px) {
+  .celda-sopa {
+    font-size: clamp(16px, 1.5vmin, 28px);
   }
 }

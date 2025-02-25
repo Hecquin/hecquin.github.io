@@ -157,6 +157,11 @@ const palabrasPorTema = {
     "Zanahoria",
   ],
 };
+// Detectar touch y ajustar parámetros
+const esTouch = "ontouchstart" in window;
+if (esTouch) {
+  document.documentElement.style.touchAction = "manipulation";
+}
 
 //************************************************************************** */
 function generarSopa() {
@@ -312,28 +317,32 @@ function rellenarEspaciosVacios(grid) {
 function renderizarSopa(grid) {
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
-  contenedor.style.gridTemplateColumns = `repeat(${TAMANO_GRILLA}, 1fr)`;
+
+  // Calcula tamaño basado en el ancho del contenedor
+  const anchoContenedor = contenedor.offsetWidth;
+  const tamanoCelda = (anchoContenedor / TAMANO_GRILLA).toFixed(2);
+
+  //contenedor.style.gridTemplateColumns = `repeat(${TAMANO_GRILLA}, ${tamanoCelda}px)`;
 
   grid.forEach((fila, y) => {
     fila.forEach((celdaInfo, x) => {
       const celda = document.createElement("div");
-      celda.className =
-        "celda-sopa" +
-        (celdaInfo.encontrada ? " encontrada" : "") +
-        (celdaInfo.encontrada &&
-        document
-          .querySelector(`.celda-sopa[data-x="${x}"][data-y="${y}"]`)
-          ?.classList.contains("multiples")
-          ? " multiples"
-          : "");
-
+      celda.className = `celda-sopa ${
+        celdaInfo.encontrada ? "encontrada" : ""
+      }`;
       celda.textContent = celdaInfo.letra;
       celda.dataset.x = x;
       celda.dataset.y = y;
+
+      // Asegurar tamaño exacto
+      /* celda.style.width = `${tamanoCelda}px`;
+      celda.style.height = `${tamanoCelda}px`; */
+
       contenedor.appendChild(celda);
     });
   });
 }
+
 //**************************************************************************** */
 function mostrarPalabras(palabras) {
   const contenedor = document.getElementById("estado");
@@ -375,11 +384,24 @@ function moverSeleccion(x, y) {
     const dx = x - celdasSeleccionadas[0].x;
     const dy = y - celdasSeleccionadas[0].y;
 
-    // Determinar dirección principal con tolerancia reducida
-    this.direccion = {
-      dx: Math.abs(dx) > Math.abs(dy) ? Math.sign(dx) : 0,
-      dy: Math.abs(dy) > Math.abs(dx) ? Math.sign(dy) : 0,
-    };
+    // Nueva lógica para detección diagonal precisa
+    const angulo = Math.atan2(dy, dx);
+    const umbralDiagonal = Math.PI / 6; // 30° de tolerancia
+
+    if (Math.abs(angulo - Math.PI / 4) < umbralDiagonal) {
+      this.direccion = { dx: 1, dy: 1 };
+    } else if (Math.abs(angulo + Math.PI / 4) < umbralDiagonal) {
+      this.direccion = { dx: 1, dy: -1 };
+    } else if (Math.abs(angulo - (3 * Math.PI) / 4) < umbralDiagonal) {
+      this.direccion = { dx: -1, dy: 1 };
+    } else if (Math.abs(angulo + (3 * Math.PI) / 4) < umbralDiagonal) {
+      this.direccion = { dx: -1, dy: -1 };
+    } else {
+      this.direccion = {
+        dx: Math.abs(dx) > Math.abs(dy) ? Math.sign(dx) : 0,
+        dy: Math.abs(dy) > Math.abs(dx) ? Math.sign(dy) : 0,
+      };
+    }
 
     // Forzar dirección diagonal pura si el ángulo es cercano
     if (Math.abs(dx) === Math.abs(dy)) {
@@ -412,19 +434,28 @@ function moverSeleccion(x, y) {
 function validarDireccionSeleccion(celdas) {
   if (celdas.length < 2) return true;
 
-  const dx = celdas[1].x - celdas[0].x;
-  const dy = celdas[1].y - celdas[0].y;
+  // Calcular dirección promedio
+  let dxTotal = 0;
+  let dyTotal = 0;
 
-  // Umbral de sensibilidad reducido
-  const deltaPermitido = 0; // Cero tolerancia a desviaciones
+  for (let i = 1; i < celdas.length; i++) {
+    dxTotal += celdas[i].x - celdas[i - 1].x;
+    dyTotal += celdas[i].y - celdas[i - 1].y;
+  }
 
-  for (let i = 2; i < celdas.length; i++) {
-    const currentDx = celdas[i].x - celdas[i - 1].x;
-    const currentDy = celdas[i].y - celdas[i - 1].y;
+  const dxPromedio = Math.round(dxTotal / (celdas.length - 1));
+  const dyPromedio = Math.round(dyTotal / (celdas.length - 1));
+
+  // Tolerancia para movimientos imperfectos
+  const umbralError = 1;
+
+  for (let i = 1; i < celdas.length; i++) {
+    const dx = celdas[i].x - celdas[i - 1].x;
+    const dy = celdas[i].y - celdas[i - 1].y;
 
     if (
-      Math.abs(currentDx - dx) > deltaPermitido ||
-      Math.abs(currentDy - dy) > deltaPermitido
+      Math.abs(dx - dxPromedio) > umbralError ||
+      Math.abs(dy - dyPromedio) > umbralError
     ) {
       return false;
     }
@@ -468,8 +499,8 @@ function obtenerCeldasEntrePuntos(x0, y0, x1, y1) {
   if (puntos.length > 1) {
     const dirX = puntos[1].x - puntos[0].x;
     const dirY = puntos[1].y - puntos[0].y;
-    x1 = x0 + dirX * Math.max(dx, dy);
-    y1 = y0 + dirY * Math.max(dx, dy);
+    x1 = Math.max(0, Math.min(TAMANO_GRILLA - 1, x1));
+    y1 = Math.max(0, Math.min(TAMANO_GRILLA - 1, y1));
   }
 
   while (true) {
@@ -564,14 +595,17 @@ function obtenerCeldasDireccionales(
   direccion
 ) {
   const celdas = [];
+  const dx = direccion.dx;
+  const dy = direccion.dy;
   const pasos = Math.max(
     Math.abs(xActual - xInicio),
     Math.abs(yActual - yInicio)
   );
 
+  // Algoritmo mejorado para diagonales puras
   for (let i = 0; i <= pasos; i++) {
-    const x = xInicio + direccion.dx * i;
-    const y = yInicio + direccion.dy * i;
+    const x = xInicio + dx * i;
+    const y = yInicio + dy * i;
 
     if (x >= 0 && x < TAMANO_GRILLA && y >= 0 && y < TAMANO_GRILLA) {
       celdas.push({ x, y });
@@ -602,47 +636,96 @@ document.addEventListener("mousemove", (e) => {
 });
 //**************************************************************************** */
 document.addEventListener("mouseup", finalizarSeleccion);
-
+//**************************************************************************** */
 // Event listeners para touch
-document
-  .getElementById("contenedor-sopa")
-  .addEventListener("touchstart", (e) => {
+// Touchstart
+document.getElementById("contenedor-sopa").addEventListener(
+  "touchstart",
+  function (e) {
     e.preventDefault();
     const touch = e.touches[0];
-    const celda = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (celda && celda.classList.contains("celda-sopa")) {
-      iniciarSeleccion(parseInt(celda.dataset.x), parseInt(celda.dataset.y));
-    }
-  });
+    const rect = this.getBoundingClientRect();
+
+    // Calcular posición relativa considerando scroll y bordes
+    const x = touch.clientX - rect.left - this.clientLeft;
+    const y = touch.clientY - rect.top - this.clientTop;
+
+    // Calcular tamaño exacto de celda
+    const tamanoCelda = (rect.width - this.clientLeft * 2) / TAMANO_GRILLA;
+
+    // Asegurar redondeo preciso
+    const celdaX = Math.min(
+      TAMANO_GRILLA - 1,
+      Math.max(0, Math.floor(x / tamanoCelda))
+    );
+    const celdaY = Math.min(
+      TAMANO_GRILLA - 1,
+      Math.max(0, Math.floor(y / tamanoCelda))
+    );
+
+    iniciarSeleccion(celdaX, celdaY);
+  },
+  { passive: false }
+);
+
 //**************************************************************************** */
 // En el event listener de touchmove, agregar:
-document.addEventListener("touchmove", (e) => {
-  e.preventDefault();
-  if (seleccionando) {
-    const touch = e.touches[0];
-    // Aumentar precisión táctil
-    const elementos = document.elementsFromPoint(touch.clientX, touch.clientY);
-    const celda = elementos.find((el) => {
-      const rect = el.getBoundingClientRect();
-      return (
-        el.classList.contains("celda-sopa") &&
-        touch.clientX >= rect.left + 10 &&
-        touch.clientX <= rect.right - 10 &&
-        touch.clientY >= rect.top + 10 &&
-        touch.clientY <= rect.bottom - 10
-      );
-    });
+// Touchmove
+// En el event listener touchmove
+document.addEventListener(
+  "touchmove",
+  function (e) {
+    e.preventDefault();
+    if (!seleccionando) return;
 
-    if (celda) {
-      moverSeleccion(parseInt(celda.dataset.x), parseInt(celda.dataset.y));
-    }
+    const touch = e.touches[0];
+    const contenedor = document.getElementById("contenedor-sopa");
+    const rect = contenedor.getBoundingClientRect();
+
+    // Cálculo preciso considerando zoom y desplazamiento
+    const scaleX = contenedor.offsetWidth / rect.width;
+    const scaleY = contenedor.offsetHeight / rect.height;
+
+    const x = (touch.clientX - rect.left) * scaleX;
+    const y = (touch.clientY - rect.top) * scaleY;
+
+    const tamanoCelda = contenedor.offsetWidth / TAMANO_GRILLA;
+    const celdaX = Math.floor(x / tamanoCelda);
+    const celdaY = Math.floor(y / tamanoCelda);
+
+    moverSeleccion(
+      Math.max(0, Math.min(TAMANO_GRILLA - 1, celdaX)),
+      Math.max(0, Math.min(TAMANO_GRILLA - 1, celdaY))
+    );
+  },
+  { passive: false }
+);
+
+//**************************************************************************** */
+// Touchend
+document.addEventListener(
+  "touchend",
+  function (e) {
+    e.preventDefault();
+    finalizarSeleccion();
+  },
+  { passive: false }
+);
+//**************************************************************************** */
+// Al final del archivo sopa.js
+window.addEventListener("resize", () => {
+  const contenedor = document.getElementById("contenedor-sopa");
+  const celdas = document.querySelectorAll(".celda-sopa");
+
+  if (celdas.length > 0) {
+    const anchoContenedor = contenedor.offsetWidth - contenedor.clientLeft * 2;
+    const nuevoTamano = (anchoContenedor / TAMANO_GRILLA).toFixed(2) + "px";
+
+    celdas.forEach((celda) => {
+      celda.style.width = nuevoTamano;
+      celda.style.height = nuevoTamano;
+    });
   }
 });
-//**************************************************************************** */
-document.addEventListener("touchend", (e) => {
-  e.preventDefault();
-  finalizarSeleccion();
-});
-//**************************************************************************** */
 // Inicialización
 generarSopa();
