@@ -44,7 +44,7 @@ html * {
   -webkit-tap-highlight-color: transparent; 
 } */
 #contenedor-sopa {
-  height: 80%;
+  min-height: 80%;
   grid-template-columns: repeat(16, 1fr);
   touch-action: manipulation;
   width: 100%;
