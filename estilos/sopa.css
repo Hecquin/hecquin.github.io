@@ -10,7 +10,7 @@ html * {
 }
 
 #selector-tema {
-  height: 10%;
+  height: 5%;
   margin: 4px 0;
 }
 
@@ -44,7 +44,7 @@ html * {
   -webkit-tap-highlight-color: transparent; 
 } */
 #contenedor-sopa {
-  height: 70%;
+  height: 80%;
   grid-template-columns: repeat(16, 1fr);
   touch-action: manipulation;
   width: 100%;
@@ -70,7 +70,7 @@ html * {
   aspect-ratio: 1; /* Celda cuadrada */
 }
 #estado {
-  height: 20%;
+  height: 15%;
   margin-top: 4px;
   background: #f0f0f0;
   border-radius: 5px;
