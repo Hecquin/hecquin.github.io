@@ -4,16 +4,14 @@ html * {
 }
 
 #contenedor-principal {
-  max-width: 100%;
-  max-height: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 8px;
   font-family: Arial, sans-serif;
 }
 
 #selector-tema {
   height: 10%;
-  margin: 20px 0;
+  margin: 4px 0;
 }
 
 #temas {
@@ -46,7 +44,9 @@ html * {
   -webkit-tap-highlight-color: transparent; 
 } */
 #contenedor-sopa {
+  height: 70%;
   grid-template-columns: repeat(16, 1fr);
+  touch-action: manipulation;
   width: 100%;
   display: grid;
   gap: 1px;
@@ -57,8 +57,7 @@ html * {
 }
 
 .celda-sopa {
-  
-  grid-column: span 1;  
+  grid-column: span 1;
   position: relative;
   display: flex;
   align-items: center;
@@ -71,30 +70,26 @@ html * {
   aspect-ratio: 1; /* Celda cuadrada */
 }
 #estado {
-  max-height: 20%;
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-#estado {
+  height: 20%;
+  margin-top: 4px;
   background: #f0f0f0;
   border-radius: 5px;
 }
 
 .palabras-lista {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 8px;
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 4px;
+  margin-top: 1px;
 }
 
 .palabra-item {
   padding: 5px 10px;
   background: #4caf50;
   color: white;
-  border-radius: 3px;
+  border-radius: 1px;
   text-align: center;
-  font-size: 0.9em;
+  font-size: 0.5em;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 /* Estilos para selección y palabras encontradas */
@@ -123,10 +118,10 @@ html * {
 .celda-sopa.encontrada::after {
   content: "";
   position: absolute;
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  border: 2px solid #4caf50;
-  border-radius: 5px;
+  /* width: calc(100% + 4px);
+  height: calc(100% + 4px); */
+  /* border: 2px solid #4caf50; */
+  /* border-radius: 5px; */
   left: -2px;
   top: -2px;
   z-index: 2;
@@ -137,7 +132,7 @@ html * {
   background: linear-gradient(135deg, #c8e6c9 50%, #b3e5fc 50%);
 }
 .celda-sopa.encontrada.multiples::after {
-  border: 2px dashed #2196f3;
+  border: 0px dashed #2196f3;
   animation: none !important; /* Eliminar animación conflictiva */
 }
 .celda-sopa.seleccionada.invalida {
@@ -167,8 +162,8 @@ html * {
   }
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   .celda-sopa {
     font-size: clamp(16px, 1.5vmin, 28px);
   }
-}
+} */

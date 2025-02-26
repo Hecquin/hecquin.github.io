@@ -157,17 +157,11 @@ const palabrasPorTema = {
     "Zanahoria",
   ],
 };
-// Detectar touch y ajustar parámetros
-const esTouch = "ontouchstart" in window;
-if (esTouch) {
-  document.documentElement.style.touchAction = "manipulation";
-}
 
 //************************************************************************** */
 function generarSopa() {
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
-
   // Inicializar grid con objetos
   let grid = Array.from({ length: TAMANO_GRILLA }, () =>
     Array(TAMANO_GRILLA)
@@ -320,7 +314,7 @@ function renderizarSopa(grid) {
 
   // Calcula tamaño basado en el ancho del contenedor
   const anchoContenedor = contenedor.offsetWidth;
-  const tamanoCelda = (anchoContenedor / TAMANO_GRILLA).toFixed(2);
+  //const tamanoCelda = (anchoContenedor / TAMANO_GRILLA).toFixed(2);
 
   //contenedor.style.gridTemplateColumns = `repeat(${TAMANO_GRILLA}, ${tamanoCelda}px)`;
 
@@ -345,9 +339,14 @@ function renderizarSopa(grid) {
 
 //**************************************************************************** */
 function mostrarPalabras(palabras) {
-  const contenedor = document.getElementById("estado");
-  contenedor.innerHTML = "<h3>Palabras a encontrar:</h3>";
+  // Limpiar todo el contenido previo (incluyendo palabras anteriores)
 
+  const contenedor = document.getElementById("estado");
+  while (contenedor.firstChild) {
+    contenedor.removeChild(contenedor.firstChild);
+  }
+  /* contenedor.innerHTML = "<h5>Palabras a encontrar:</h5>";
+   */
   const lista = document.createElement("div");
   lista.className = "palabras-lista";
 
@@ -379,46 +378,36 @@ function iniciarSeleccion(x, y) {
 function moverSeleccion(x, y) {
   if (!seleccionando) return;
 
-  // Bloquear dirección después del primer movimiento
-  if (celdasSeleccionadas.length === 1) {
-    const dx = x - celdasSeleccionadas[0].x;
-    const dy = y - celdasSeleccionadas[0].y;
+  // Calcular dirección basada en la posición inicial y actual
+  const dx = x - inicioX;
+  const dy = y - inicioY;
 
-    // Nueva lógica para detección diagonal precisa
-    const angulo = Math.atan2(dy, dx);
-    const umbralDiagonal = Math.PI / 6; // 30° de tolerancia
+  // Determinar dirección principal con lógica mejorada
+  const direccion = {
+    dx: dx !== 0 ? Math.sign(dx) : 0,
+    dy: dy !== 0 ? Math.sign(dy) : 0,
+  };
 
-    if (Math.abs(angulo - Math.PI / 4) < umbralDiagonal) {
-      this.direccion = { dx: 1, dy: 1 };
-    } else if (Math.abs(angulo + Math.PI / 4) < umbralDiagonal) {
-      this.direccion = { dx: 1, dy: -1 };
-    } else if (Math.abs(angulo - (3 * Math.PI) / 4) < umbralDiagonal) {
-      this.direccion = { dx: -1, dy: 1 };
-    } else if (Math.abs(angulo + (3 * Math.PI) / 4) < umbralDiagonal) {
-      this.direccion = { dx: -1, dy: -1 };
-    } else {
-      this.direccion = {
-        dx: Math.abs(dx) > Math.abs(dy) ? Math.sign(dx) : 0,
-        dy: Math.abs(dy) > Math.abs(dx) ? Math.sign(dy) : 0,
-      };
-    }
+  // Calcular máxima distancia en cualquier eje
+  const distancia = Math.max(Math.abs(dx), Math.abs(dy));
 
-    // Forzar dirección diagonal pura si el ángulo es cercano
-    if (Math.abs(dx) === Math.abs(dy)) {
-      this.direccion = { dx: Math.sign(dx), dy: Math.sign(dy) };
+  // Generar camino correctamente
+  const nuevasCeldas = [];
+  for (let i = 0; i <= distancia; i++) {
+    const nuevaX = inicioX + direccion.dx * i;
+    const nuevaY = inicioY + direccion.dy * i;
+
+    if (
+      nuevaX >= 0 &&
+      nuevaX < TAMANO_GRILLA &&
+      nuevaY >= 0 &&
+      nuevaY < TAMANO_GRILLA
+    ) {
+      nuevasCeldas.push({ x: nuevaX, y: nuevaY });
     }
   }
 
-  // Aplicar dirección bloqueada
-  const nuevasCeldas = obtenerCeldasDireccionales(
-    inicioX,
-    inicioY,
-    x,
-    y,
-    this.direccion
-  );
-
-  // Limpiar selección previa
+  // Actualizar selección
   document.querySelectorAll(".celda-sopa.seleccionada").forEach((c) => {
     if (
       !nuevasCeldas.some((nc) => nc.x == c.dataset.x && nc.y == c.dataset.y)
@@ -427,8 +416,17 @@ function moverSeleccion(x, y) {
     }
   });
 
-  // Agregar nuevas celdas válidas
-  nuevasCeldas.forEach(({ x, y }) => agregarSeleccion(x, y));
+  nuevasCeldas.forEach((pos) => {
+    const celda = document.querySelector(
+      `.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`
+    );
+    if (!celda.classList.contains("seleccionada")) {
+      celda.classList.add("seleccionada");
+      if (!celdasSeleccionadas.some((c) => c.x === pos.x && c.y === pos.y)) {
+        celdasSeleccionadas.push(pos);
+      }
+    }
+  });
 }
 //**************************************************************************** */
 function validarDireccionSeleccion(celdas) {
@@ -713,18 +711,10 @@ document.addEventListener(
 );
 //**************************************************************************** */
 // Al final del archivo sopa.js
+// Actualizar al cambiar tamaño de pantalla
 window.addEventListener("resize", () => {
-  const contenedor = document.getElementById("contenedor-sopa");
-  const celdas = document.querySelectorAll(".celda-sopa");
-
-  if (celdas.length > 0) {
-    const anchoContenedor = contenedor.offsetWidth - contenedor.clientLeft * 2;
-    const nuevoTamano = (anchoContenedor / TAMANO_GRILLA).toFixed(2) + "px";
-
-    celdas.forEach((celda) => {
-      celda.style.width = nuevoTamano;
-      celda.style.height = nuevoTamano;
-    });
+  if (document.getElementById("contenedor-sopa").children.length > 0) {
+    renderizarSopa(obtenerGridActual());
   }
 });
 // Inicialización
