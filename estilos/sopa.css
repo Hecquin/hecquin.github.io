@@ -4,6 +4,7 @@ html * {
 }
 
 #contenedor-principal {
+  height: 100vh;
   margin: 0 auto;
   padding: 8px;
   font-family: Arial, sans-serif;
@@ -51,7 +52,7 @@ html * {
   display: grid;
   gap: 1px;
   margin: 0 auto;
-  aspect-ratio: 1; /* Fuerza relación cuadrada */
+  /* aspect-ratio: 1;  */ /* Fuerza relación cuadrada */
   background: #fff;
   touch-action: none;
 }
@@ -67,7 +68,7 @@ html * {
   font-size: clamp(12px, 1.8vmin, 24px); /* Escala con el viewport */
   font-weight: bold;
   user-select: none;
-  aspect-ratio: 1; /* Celda cuadrada */
+  /* aspect-ratio: 1;  */ /* Celda cuadrada */
 }
 #estado {
   height: 15%;
