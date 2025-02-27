@@ -4,7 +4,6 @@ html * {
 }
 
 #contenedor-principal {
-  height: 100vh;
   margin: 0 auto;
   padding: 8px;
   font-family: Arial, sans-serif;
@@ -51,7 +50,7 @@ html * {
   width: 100%;
   display: grid;
   gap: 1px;
-  margin-top: 12px;
+  margin: 0 auto;
   aspect-ratio: 1; /* Fuerza relación cuadrada */
   background: #fff;
   touch-action: none;
@@ -72,7 +71,7 @@ html * {
 }
 #estado {
   height: 15%;
-  margin-top: 12px;
+  margin-top: 4px;
   background: #f0f0f0;
   border-radius: 5px;
 }
