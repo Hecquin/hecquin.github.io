@@ -1,5 +1,5 @@
 // Configuración inicial
-const TAMANO_GRILLA = 16;
+const TAMANO_GRILLA = 15;
 const CANTIDAD_PALABRAS = 16;
 
 // Variables globales

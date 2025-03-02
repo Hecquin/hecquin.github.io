@@ -9,10 +9,19 @@ html * {
   padding: 8px;
   font-family: Arial, sans-serif;
 }
-
+#barra-navegacion {
+  height: 10%;
+  border: 1px black solid;
+  margin-top: 4px;
+}
 #selector-tema {
-  height: 5%;
-  margin: 4px 0;
+  height: 10%;
+  margin-top: 8px;
+  border-radius: 20px;
+  border: 1px black solid;
+  padding-left: 10px;
+  align-content: center;
+  background-color: #4caf50;
 }
 
 #temas {
@@ -20,39 +29,15 @@ html * {
   margin-left: 10px;
 }
 
-/* #contenedor-sopa {
-  max-width: 100%;
-  height: 60%;
-  display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  gap: 2px;
-  background: #fff;
-  margin: 20px 0;
-  touch-action: none; 
-  overflow: hidden;
-} */
-
-/* .celda-sopa {
-  border: 1px solid #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  background: #f8f8f8;
-  user-select: none;
-  transition: background-color 0.2s;
-  touch-action: none;
-  -webkit-tap-highlight-color: transparent; 
-} */
 #contenedor-sopa {
-  height: 80%;
-  grid-template-columns: repeat(16, 1fr);
-  touch-action: manipulation;
+  height: 50%;
+  /* */
   width: 100%;
   display: grid;
+  grid-template-columns: repeat(15, 6.6%);
   gap: 1px;
-  margin: 0 auto;
-  /* aspect-ratio: 1;  */ /* Fuerza relación cuadrada */
+  margin-top: 12px;
+  aspect-ratio: 1; /* Fuerza relación cuadrada */
   background: #fff;
   touch-action: none;
 }
@@ -68,11 +53,11 @@ html * {
   font-size: clamp(12px, 1.8vmin, 24px); /* Escala con el viewport */
   font-weight: bold;
   user-select: none;
-  /* aspect-ratio: 1;  */ /* Celda cuadrada */
+  aspect-ratio: 1; /* Celda cuadrada */
 }
 #estado {
-  height: 15%;
-  margin-top: 4px;
+  height: 23%;
+  margin-top: 12px;
   background: #f0f0f0;
   border-radius: 5px;
 }
@@ -119,10 +104,10 @@ html * {
 .celda-sopa.encontrada::after {
   content: "";
   position: absolute;
-  /* width: calc(100% + 4px);
-  height: calc(100% + 4px); */
-  /* border: 2px solid #4caf50; */
-  /* border-radius: 5px; */
+  /* width: calc(100% );
+  height: calc(100% );
+  border: 2px solid #4caf50;
+  border-radius: 1px; */
   left: -2px;
   top: -2px;
   z-index: 2;
