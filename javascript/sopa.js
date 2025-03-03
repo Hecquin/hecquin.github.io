@@ -162,13 +162,11 @@ const palabrasPorTema = {
 function generarSopa() {
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
-  // Inicializar grid con objetos
+  
   let grid = Array.from({ length: TAMANO_GRILLA }, () =>
-    Array(TAMANO_GRILLA)
-      .fill()
-      .map(() => ({
-        letra: "",
-        encontrada: false,
+      Array(TAMANO_GRILLA).fill().map(() => ({
+          letra: "",
+          encontrada: false,
       }))
   );
 
@@ -178,7 +176,7 @@ function generarSopa() {
   colocarPalabras(grid, palabrasActuales);
   rellenarEspaciosVacios(grid);
   renderizarSopa(grid);
-  mostrarPalabras(palabrasActuales);
+  mostrarPalabras(palabrasActuales); // Mostrar solo las colocadas
 }
 //**************************************************************************** */
 
@@ -208,56 +206,55 @@ function seleccionarPalabrasAleatorias(palabras) {
 }
 //**************************************************************************** */
 
-// Modificar la función colocarPalabras para mejorar la colocación
+//  función colocarPalabras para mejorar la colocación
 function colocarPalabras(grid, palabras) {
   const direcciones = [
-    { dx: 1, dy: 0 },
-    { dx: 0, dy: 1 },
-    { dx: 1, dy: 1 },
-    { dx: 1, dy: -1 },
-    { dx: -1, dy: 0 },
-    { dx: 0, dy: -1 },
-    { dx: -1, dy: 1 },
-    { dx: -1, dy: -1 },
+      { dx: 1, dy: 0 },
+      { dx: 0, dy: 1 },
+      { dx: 1, dy: 1 },
+      { dx: 1, dy: -1 },
+      { dx: -1, dy: 0 },
+      { dx: 0, dy: -1 },
+      { dx: -1, dy: 1 },
+      { dx: -1, dy: -1 },
   ];
 
+  const palabrasNoColocadas = [];
+  
   palabras.forEach((palabra) => {
-    let colocada = false;
-    let intentos = 0;
-    const longitud = palabra.length;
+      let colocada = false;
+      let intentos = 0;
+      const longitud = palabra.length;
 
-    while (!colocada && intentos < 500) {
-      // Aumentar intentos
-      intentos++;
-      const dir = direcciones[Math.floor(Math.random() * direcciones.length)];
+      while (!colocada && intentos < 500) {
+          intentos++;
+          const dir = direcciones[Math.floor(Math.random() * direcciones.length)];
 
-      // Calcular posición máxima permitida
-      const maxX =
-        dir.dx > 0
-          ? TAMANO_GRILLA - longitud
-          : dir.dx < 0
-          ? longitud - 1
-          : TAMANO_GRILLA - 1;
-      const maxY =
-        dir.dy > 0
-          ? TAMANO_GRILLA - longitud
-          : dir.dy < 0
-          ? longitud - 1
-          : TAMANO_GRILLA - 1;
+          const maxX = dir.dx > 0 ? TAMANO_GRILLA - longitud : dir.dx < 0 ? longitud - 1 : TAMANO_GRILLA - 1;
+          const maxY = dir.dy > 0 ? TAMANO_GRILLA - longitud : dir.dy < 0 ? longitud - 1 : TAMANO_GRILLA - 1;
 
-      const x = Math.floor(Math.random() * (maxX + 1));
-      const y = Math.floor(Math.random() * (maxY + 1));
+          const x = Math.floor(Math.random() * (maxX + 1));
+          const y = Math.floor(Math.random() * (maxY + 1));
 
-      if (puedeColocarPalabra(grid, palabra, x, y, dir.dx, dir.dy)) {
-        colocarPalabraEnGrid(grid, palabra, x, y, dir.dx, dir.dy);
-        colocada = true;
+          if (puedeColocarPalabra(grid, palabra, x, y, dir.dx, dir.dy)) {
+              colocarPalabraEnGrid(grid, palabra, x, y, dir.dx, dir.dy);
+              colocada = true;
+          }
       }
-    }
 
-    if (!colocada) {
-      console.warn(`No se pudo colocar: ${palabra}`);
-    }
+      if (!colocada) {
+          palabrasNoColocadas.push(palabra);
+      }
   });
+
+  // Filtrar palabras no colocadas
+  palabrasActuales = palabrasActuales.filter(p => !palabrasNoColocadas.includes(p));
+  
+  // Asegurar cantidad mínima de palabras
+  if (palabrasActuales.length < CANTIDAD_PALABRAS * 0.5) {
+      console.warn('Demasiadas palabras no pudieron colocarse. Regenerando...');
+      generarSopa();
+  }
 }
 //**************************************************************************** */
 // Función para verificar si cabe la palabra
