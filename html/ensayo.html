@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Select Touch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #selector-tema {
+            margin: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            position: relative; /* Evitar problemas con posición */
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            touch-action: auto;
+            pointer-events: auto;
+            -webkit-appearance: menulist;
+            appearance: menulist;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="selector-tema">
+        <label for="temas">Elige un tema:</label>
+        <select id="temas">
+            <option value="general">General</option>
+            <option value="frutas">Frutas</option>
+            <option value="verduras">Verduras</option>
+        </select>
+    </div>
+
+    <script>
+        document.getElementById("temas").addEventListener("touchstart", function () {
+            this.focus();
+        });
+    </script>
+
+</body>
+</html>

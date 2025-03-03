@@ -1,5 +1,5 @@
 // Configuración inicial
-const TAMANO_GRILLA = 15;
+const TAMANO_GRILLA = 14;
 const CANTIDAD_PALABRAS = 16;
 
 // Variables globales
@@ -717,5 +717,25 @@ window.addEventListener("resize", () => {
     renderizarSopa(obtenerGridActual());
   }
 });
+document
+  .querySelector("#barra-navegacion a")
+  .addEventListener("touchstart", function () {
+    window.location.href = "../index.html";
+  });
+
+/* document.addEventListener("touchstart", function (e) {
+  e.preventDefault(); 
+}, { passive: false }); */
+
+document.querySelector("#temas").style.position = "relative";
+document.querySelector("#temas").style.zIndex = "9999";
+document.getElementById("temas").addEventListener("touchstart", function () {
+  this.focus();
+});
+document.getElementById("temas").addEventListener("touchstart", function (e) {
+  this.classList.toggle("activo");
+  e.stopPropagation(); // Evita que se cierre de inmediato
+});
+
 // Inicialización
 generarSopa();

@@ -3,13 +3,15 @@ html * {
   box-sizing: border-box;
 }
 body {
-  background-image: url('../fondo\ sopa\ letras.png'); /* Reemplaza con la ruta correcta */
+  background-image: url("../fondo\ sopa\ letras.png"); /* Reemplaza con la ruta correcta */
   background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
   background-position: center; /* Centra la imagen */
   background-repeat: no-repeat; /* Evita que la imagen se repita */
   background-attachment: fixed; /* Hace que el fondo permanezca fijo al hacer scroll */
   background-color: rgba(255, 255, 255, 0.6); /* Blanco con 60% de opacidad */
   background-blend-mode: overlay;
+  overflow-y: auto;  /* Permite desplazamiento vertical si el contenido lo necesita */
+  height: 100%;
 }
 #contenedor-principal {
   height: 100vh;
@@ -17,38 +19,8 @@ body {
   padding: 8px;
   font-family: Arial, sans-serif;
 }
-#barra-navegacion {
-  height: 10%;
-  border: 1px black solid;
-  margin-top: 4px;
-  background: #2c3e50;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.menu-navegacion ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.menu-navegacion a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.menu-navegacion a:hover {
-  background: #34495e;
-}
 #selector-tema {
-  height: 10%;
+  height: 9vh;
   margin-top: 8px;
   border-radius: 20px;
   border: 1px black solid;
@@ -57,21 +29,50 @@ body {
   align-items: center;
   justify-content: center;
   padding: auto;
+  position: relative;
 }
-
 #temas {
   padding: 5px;
   margin-left: 10px;
+  touch-action: manipulation;
+  pointer-events: auto;
+  
+}
+#temas.activo {
+  display: block;
+}
+#temas:hover, #temas:focus-within {
+  display: block;
+}
+#barra-navegacion {
+  border: 1px black solid;
+  margin-left: 8px;
+  background: #0a2744;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+#barra-navegacion a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 2px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  touch-action: manipulation;
+}
+#barra-navegacion a:hover {
+  background: #3a5a7a;
+}
 #contenedor-sopa {
-  /* height: min(50vh, 100%); */ /* Toma el menor valor entre el 50% del padre y el 50% del viewport */
+  /* height: 65vh; */
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(15, 6.468%);
+  grid-template-columns: repeat(14, 6.9%);
   gap: 1px;
   margin-top: 12px;
-  /* aspect-ratio: 1; */ /* Fuerza relación cuadrada */
+  aspect-ratio: 1; /* Fuerza relación cuadrada */
   background: #fff;
   touch-action: none;
 }
@@ -90,7 +91,7 @@ body {
   aspect-ratio: 1; /* Celda cuadrada */
 }
 #estado {
-  height: 23%;
+  height: 25vh;
   margin-top: 12px;
   background: #f0f0f0;
   border-radius: 5px;
@@ -182,19 +183,22 @@ body {
   }
 }
 
-@media (min-width: 500px) { /* Cuando la pantalla sea muy ancha */
+@media (min-width: 500px) {
+  /* Cuando la pantalla sea muy ancha */
   #contenedor-principal {
     /* height: 100vh; */ /* Se ajusta al alto del viewport */
     width: 80vh;
   }
 }
-@media (min-width: 900px) { /* Cuando la pantalla sea muy ancha */
+@media (min-width: 900px) {
+  /* Cuando la pantalla sea muy ancha */
   #contenedor-principal {
     /* height: 100vh; */ /* Se ajusta al alto del viewport */
     width: 70vh;
   }
 }
-@media (min-width: 1200px) { /* Cuando la pantalla sea muy ancha */
+@media (min-width: 1200px) {
+  /* Cuando la pantalla sea muy ancha */
   #contenedor-principal {
     /* height: 100vh; */ /* Se ajusta al alto del viewport */
     width: 65vh;
