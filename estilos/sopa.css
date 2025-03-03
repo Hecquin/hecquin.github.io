@@ -4,7 +4,7 @@ html * {
 }
 
 #contenedor-principal {
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0 auto;
   padding: 8px;
   font-family: Arial, sans-serif;
@@ -13,15 +13,40 @@ html * {
   height: 10%;
   border: 1px black solid;
   margin-top: 4px;
+  background: #2c3e50;
+  align-items: center;
+}
+.menu-navegacion ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.menu-navegacion a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.menu-navegacion a:hover {
+  background: #34495e;
 }
 #selector-tema {
   height: 10%;
   margin-top: 8px;
   border-radius: 20px;
   border: 1px black solid;
-  padding-left: 10px;
-  align-content: center;
+  display: flex;
   background-color: #4caf50;
+  align-items: center;
+  justify-content: center;
+  padding: auto;
 }
 
 #temas {
@@ -34,7 +59,7 @@ html * {
   /* */
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(15, 6.6%);
+  grid-template-columns: repeat(15, 6.468%);
   gap: 1px;
   margin-top: 12px;
   aspect-ratio: 1; /* Fuerza relación cuadrada */
