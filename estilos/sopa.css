@@ -4,7 +4,7 @@ html * {
 }
 
 #contenedor-principal {
-  /* height: 100vh; */
+  height: 100vh;
   margin: 0 auto;
   padding: 8px;
   font-family: Arial, sans-serif;
@@ -14,6 +14,8 @@ html * {
   border: 1px black solid;
   margin-top: 4px;
   background: #2c3e50;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 .menu-navegacion ul {
@@ -55,14 +57,13 @@ html * {
 }
 
 #contenedor-sopa {
-  height: 50%;
-  /* */
+  /* height: min(50vh, 100%); */ /* Toma el menor valor entre el 50% del padre y el 50% del viewport */
   width: 100%;
   display: grid;
   grid-template-columns: repeat(15, 6.468%);
   gap: 1px;
   margin-top: 12px;
-  aspect-ratio: 1; /* Fuerza relación cuadrada */
+  /* aspect-ratio: 1; */ /* Fuerza relación cuadrada */
   background: #fff;
   touch-action: none;
 }
@@ -173,8 +174,21 @@ html * {
   }
 }
 
-/* @media (min-width: 1024px) {
-  .celda-sopa {
-    font-size: clamp(16px, 1.5vmin, 28px);
+@media (min-width: 500px) { /* Cuando la pantalla sea muy ancha */
+  #contenedor-principal {
+    /* height: 100vh; */ /* Se ajusta al alto del viewport */
+    width: 80vh;
   }
-} */
+}
+@media (min-width: 900px) { /* Cuando la pantalla sea muy ancha */
+  #contenedor-principal {
+    /* height: 100vh; */ /* Se ajusta al alto del viewport */
+    width: 70vh;
+  }
+}
+@media (min-width: 1200px) { /* Cuando la pantalla sea muy ancha */
+  #contenedor-principal {
+    /* height: 100vh; */ /* Se ajusta al alto del viewport */
+    width: 65vh;
+  }
+}
