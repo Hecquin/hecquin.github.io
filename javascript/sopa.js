@@ -691,6 +691,7 @@ function obtenerCeldasDireccionales(
 document
   .getElementById("contenedor-sopa")
   .addEventListener("mousedown", (e) => {
+    if (e.target.closest("#selector-tema")) return;
     if (e.target.classList.contains("celda-sopa")) {
       iniciarSeleccion(
         parseInt(e.target.dataset.x),
@@ -716,6 +717,7 @@ document.getElementById("contenedor-sopa").addEventListener(
   "touchstart",
   function (e) {
     e.preventDefault();
+    if (e.target.closest("#selector-tema")) return;
     const touch = e.touches[0];
     const rect = this.getBoundingClientRect();
 
@@ -748,6 +750,7 @@ document.addEventListener(
   "touchmove",
   function (e) {
     e.preventDefault();
+    if (e.target.closest("#selector-tema")) return;
     if (!seleccionando) return;
 
     const touch = e.touches[0];
@@ -802,10 +805,23 @@ document.querySelector("#temas").style.zIndex = "9999";
 document.getElementById("temas").addEventListener("touchstart", function () {
   this.focus();
 });
-document.getElementById("temas").addEventListener("touchstart", function (e) {
+const selectTemas = document.getElementById("temas");
+selectTemas.style.position = "relative";
+selectTemas.style.zIndex = "9999";
+
+selectTemas.addEventListener("touchstart", function(e) {
+  // Permitir que el select se active normalmente
+  this.focus();
+  // No usamos stopPropagation para que el evento pueda seguir su curso.
+});
+selectTemas.addEventListener("click", function(e) {
+  // Opcionalmente, aplicar alguna clase o estilo si es necesario
+  this.classList.toggle("activo");
+});
+/* document.getElementById("temas").addEventListener("touchstart", function (e) {
   this.classList.toggle("activo");
   e.stopPropagation(); // Evita que se cierre de inmediato
-});
+}); */
 
 // Inicialización
 generarSopa();

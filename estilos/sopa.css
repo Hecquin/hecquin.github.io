@@ -28,11 +28,11 @@ body {
   background-color: #4caf50;
   align-items: center;
   justify-content: center;
-  padding: auto;
+  padding: 10px;
   position: relative;
 }
 #temas {
-  padding: 5px;
+  padding: 8px;
   margin-left: 10px;
   touch-action: manipulation;
   pointer-events: auto;
