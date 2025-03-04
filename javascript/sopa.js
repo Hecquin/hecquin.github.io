@@ -162,11 +162,13 @@ const palabrasPorTema = {
 function generarSopa() {
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
-  
+
   let grid = Array.from({ length: TAMANO_GRILLA }, () =>
-      Array(TAMANO_GRILLA).fill().map(() => ({
-          letra: "",
-          encontrada: false,
+    Array(TAMANO_GRILLA)
+      .fill()
+      .map(() => ({
+        letra: "",
+        encontrada: false,
       }))
   );
 
@@ -209,51 +211,63 @@ function seleccionarPalabrasAleatorias(palabras) {
 //  función colocarPalabras para mejorar la colocación
 function colocarPalabras(grid, palabras) {
   const direcciones = [
-      { dx: 1, dy: 0 },
-      { dx: 0, dy: 1 },
-      { dx: 1, dy: 1 },
-      { dx: 1, dy: -1 },
-      { dx: -1, dy: 0 },
-      { dx: 0, dy: -1 },
-      { dx: -1, dy: 1 },
-      { dx: -1, dy: -1 },
+    { dx: 1, dy: 0 },
+    { dx: 0, dy: 1 },
+    { dx: 1, dy: 1 },
+    { dx: 1, dy: -1 },
+    { dx: -1, dy: 0 },
+    { dx: 0, dy: -1 },
+    { dx: -1, dy: 1 },
+    { dx: -1, dy: -1 },
   ];
 
   const palabrasNoColocadas = [];
-  
+
   palabras.forEach((palabra) => {
-      let colocada = false;
-      let intentos = 0;
-      const longitud = palabra.length;
+    let colocada = false;
+    let intentos = 0;
+    const longitud = palabra.length;
 
-      while (!colocada && intentos < 500) {
-          intentos++;
-          const dir = direcciones[Math.floor(Math.random() * direcciones.length)];
+    while (!colocada && intentos < 500) {
+      intentos++;
+      const dir = direcciones[Math.floor(Math.random() * direcciones.length)];
 
-          const maxX = dir.dx > 0 ? TAMANO_GRILLA - longitud : dir.dx < 0 ? longitud - 1 : TAMANO_GRILLA - 1;
-          const maxY = dir.dy > 0 ? TAMANO_GRILLA - longitud : dir.dy < 0 ? longitud - 1 : TAMANO_GRILLA - 1;
+      const maxX =
+        dir.dx > 0
+          ? TAMANO_GRILLA - longitud
+          : dir.dx < 0
+          ? longitud - 1
+          : TAMANO_GRILLA - 1;
+      const maxY =
+        dir.dy > 0
+          ? TAMANO_GRILLA - longitud
+          : dir.dy < 0
+          ? longitud - 1
+          : TAMANO_GRILLA - 1;
 
-          const x = Math.floor(Math.random() * (maxX + 1));
-          const y = Math.floor(Math.random() * (maxY + 1));
+      const x = Math.floor(Math.random() * (maxX + 1));
+      const y = Math.floor(Math.random() * (maxY + 1));
 
-          if (puedeColocarPalabra(grid, palabra, x, y, dir.dx, dir.dy)) {
-              colocarPalabraEnGrid(grid, palabra, x, y, dir.dx, dir.dy);
-              colocada = true;
-          }
+      if (puedeColocarPalabra(grid, palabra, x, y, dir.dx, dir.dy)) {
+        colocarPalabraEnGrid(grid, palabra, x, y, dir.dx, dir.dy);
+        colocada = true;
       }
+    }
 
-      if (!colocada) {
-          palabrasNoColocadas.push(palabra);
-      }
+    if (!colocada) {
+      palabrasNoColocadas.push(palabra);
+    }
   });
 
   // Filtrar palabras no colocadas
-  palabrasActuales = palabrasActuales.filter(p => !palabrasNoColocadas.includes(p));
-  
+  palabrasActuales = palabrasActuales.filter(
+    (p) => !palabrasNoColocadas.includes(p)
+  );
+
   // Asegurar cantidad mínima de palabras
   if (palabrasActuales.length < CANTIDAD_PALABRAS * 0.5) {
-      console.warn('Demasiadas palabras no pudieron colocarse. Regenerando...');
-      generarSopa();
+    console.warn("Demasiadas palabras no pudieron colocarse. Regenerando...");
+    generarSopa();
   }
 }
 //**************************************************************************** */
@@ -311,10 +325,6 @@ function renderizarSopa(grid) {
 
   // Calcula tamaño basado en el ancho del contenedor
   const anchoContenedor = contenedor.offsetWidth;
-  //const tamanoCelda = (anchoContenedor / TAMANO_GRILLA).toFixed(2);
-
-  //contenedor.style.gridTemplateColumns = `repeat(${TAMANO_GRILLA}, ${tamanoCelda}px)`;
-
   grid.forEach((fila, y) => {
     fila.forEach((celdaInfo, x) => {
       const celda = document.createElement("div");
@@ -324,10 +334,6 @@ function renderizarSopa(grid) {
       celda.textContent = celdaInfo.letra;
       celda.dataset.x = x;
       celda.dataset.y = y;
-
-      // Asegurar tamaño exacto
-      /* celda.style.width = `${tamanoCelda}px`;
-      celda.style.height = `${tamanoCelda}px`; */
 
       contenedor.appendChild(celda);
     });
@@ -342,8 +348,6 @@ function mostrarPalabras(palabras) {
   while (contenedor.firstChild) {
     contenedor.removeChild(contenedor.firstChild);
   }
-  /* contenedor.innerHTML = "<h5>Palabras a encontrar:</h5>";
-   */
   const lista = document.createElement("div");
   lista.className = "palabras-lista";
 
@@ -372,7 +376,7 @@ function iniciarSeleccion(x, y) {
 }
 //**************************************************************************** */
 // Función para manejar el movimiento durante la selección
-function moverSeleccion(x, y) {
+/* function moverSeleccion(x, y) {
   if (!seleccionando) return;
 
   // Calcular dirección basada en la posición inicial y actual
@@ -424,39 +428,88 @@ function moverSeleccion(x, y) {
       }
     }
   });
-}
+} */
 //**************************************************************************** */
-function validarDireccionSeleccion(celdas) {
-  if (celdas.length < 2) return true;
+function moverSeleccion(x, y) {
+  if (!seleccionando) return;
 
-  // Calcular dirección promedio
-  let dxTotal = 0;
-  let dyTotal = 0;
-
-  for (let i = 1; i < celdas.length; i++) {
-    dxTotal += celdas[i].x - celdas[i - 1].x;
-    dyTotal += celdas[i].y - celdas[i - 1].y;
+  // Calcular dirección basada en la posición inicial y la posición actual
+  const dx = x - inicioX;
+  const dy = y - inicioY;
+  
+  // Si apenas se ha seleccionado la primera letra, definimos la dirección con la segunda
+  let direccion;
+  if (celdasSeleccionadas.length === 1) {
+    direccion = {
+      dx: dx !== 0 ? Math.sign(dx) : 0,
+      dy: dy !== 0 ? Math.sign(dy) : 0,
+    };
+  } else if (celdasSeleccionadas.length >= 2) {
+    // Usar la dirección definida a partir de las dos primeras letras
+    direccion = {
+      dx: celdasSeleccionadas[1].x - celdasSeleccionadas[0].x,
+      dy: celdasSeleccionadas[1].y - celdasSeleccionadas[0].y,
+    };
+  } else {
+    // En caso de no haber letras seleccionadas (por precaución)
+    direccion = { dx: 0, dy: 0 };
   }
 
-  const dxPromedio = Math.round(dxTotal / (celdas.length - 1));
-  const dyPromedio = Math.round(dyTotal / (celdas.length - 1));
-
-  // Tolerancia para movimientos imperfectos
-  const umbralError = 1;
-
-  for (let i = 1; i < celdas.length; i++) {
-    const dx = celdas[i].x - celdas[i - 1].x;
-    const dy = celdas[i].y - celdas[i - 1].y;
-
-    if (
-      Math.abs(dx - dxPromedio) > umbralError ||
-      Math.abs(dy - dyPromedio) > umbralError
-    ) {
-      return false;
+  // Calcular la distancia en la dirección definida
+  const distancia = Math.max(Math.abs(x - inicioX), Math.abs(y - inicioY));
+  const nuevasCeldas = [];
+  for (let i = 0; i <= distancia; i++) {
+    const nuevaX = inicioX + direccion.dx * i;
+    const nuevaY = inicioY + direccion.dy * i;
+    if (nuevaX >= 0 && nuevaX < TAMANO_GRILLA && nuevaY >= 0 && nuevaY < TAMANO_GRILLA) {
+      nuevasCeldas.push({ x: nuevaX, y: nuevaY });
     }
   }
-  return true;
+
+  // Construir la palabra parcial a partir de las celdas propuestas
+  let palabraParcial = "";
+  nuevasCeldas.forEach(pos => {
+    const celda = document.querySelector(`.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`);
+    if (celda) {
+      palabraParcial += celda.textContent;
+    }
+  });
+
+  // Verificar si la palabra parcial es un prefijo válido de alguna palabra de palabrasActuales
+  const esPrefijoValido = palabrasActuales.some(word =>
+    word.startsWith(palabraParcial) ||
+    word.startsWith([...palabraParcial].reverse().join(""))
+  );
+
+  // Si la palabra parcial no es válida (y se ha avanzado al menos dos letras), eliminamos la última celda
+  if (!esPrefijoValido && nuevasCeldas.length > 1) {
+    nuevasCeldas.pop();
+  }
+
+  // Actualizar la selección visual: quitar las que ya no están en nuevasCeldas
+  document.querySelectorAll(".celda-sopa.seleccionada").forEach(celda => {
+    const cx = parseInt(celda.dataset.x);
+    const cy = parseInt(celda.dataset.y);
+    if (!nuevasCeldas.some(pos => pos.x === cx && pos.y === cy)) {
+      celda.classList.remove("seleccionada");
+      // También removemos de celdasSeleccionadas la posición eliminada
+      celdasSeleccionadas = celdasSeleccionadas.filter(pos => pos.x !== cx || pos.y !== cy);
+    }
+  });
+
+  // Marcar las nuevas celdas y actualizarlas en celdasSeleccionadas
+  nuevasCeldas.forEach(pos => {
+    const celda = document.querySelector(`.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`);
+    if (celda && !celda.classList.contains("seleccionada")) {
+      celda.classList.add("seleccionada");
+      // Solo agregamos si no está ya en la lista
+      if (!celdasSeleccionadas.some(c => c.x === pos.x && c.y === pos.y)) {
+        celdasSeleccionadas.push(pos);
+      }
+    }
+  });
 }
+
 //**************************************************************************** */
 // Función para finalizar la selección
 function finalizarSeleccion() {
@@ -464,6 +517,31 @@ function finalizarSeleccion() {
   verificarPalabra();
   celdasSeleccionadas = [];
 }
+//**************************************************************************** */
+/* function finalizarSeleccion() {
+  seleccionando = false;
+
+  // Si la dirección no está alineada correctamente en las primeras letras, corregir
+  if (celdasSeleccionadas.length >= 3) {
+    const primeraCelda = celdasSeleccionadas[0];
+    const segundaCelda = celdasSeleccionadas[1];
+    const dx = segundaCelda.x - primeraCelda.x;
+    const dy = segundaCelda.y - primeraCelda.y;
+
+    direccionSeleccion = { dx, dy };
+
+    // Filtrar celdas que no cumplan con la dirección inicial
+    celdasSeleccionadas = celdasSeleccionadas.filter((celda, index) => {
+      if (index === 0) return true; // Mantener siempre la primera celda
+      const relX = celda.x - primeraCelda.x;
+      const relY = celda.y - primeraCelda.y;
+      return relX % direccionSeleccion.dx === 0 && relY % direccionSeleccion.dy === 0;
+    });
+  }
+
+  verificarPalabra();
+  celdasSeleccionadas = [];
+} */
 //**************************************************************************** */
 // Función para agregar una celda a la selección
 
@@ -632,8 +710,8 @@ document.addEventListener("mousemove", (e) => {
 //**************************************************************************** */
 document.addEventListener("mouseup", finalizarSeleccion);
 //**************************************************************************** */
-// Event listeners para touch
-// Touchstart
+
+// Touchstart en contenedor-sopa
 document.getElementById("contenedor-sopa").addEventListener(
   "touchstart",
   function (e) {
@@ -664,9 +742,8 @@ document.getElementById("contenedor-sopa").addEventListener(
 );
 
 //**************************************************************************** */
-// En el event listener de touchmove, agregar:
-// Touchmove
-// En el event listener touchmove
+
+// Event listener touchmove
 document.addEventListener(
   "touchmove",
   function (e) {
@@ -707,7 +784,7 @@ document.addEventListener(
   { passive: false }
 );
 //**************************************************************************** */
-// Al final del archivo sopa.js
+
 // Actualizar al cambiar tamaño de pantalla
 window.addEventListener("resize", () => {
   if (document.getElementById("contenedor-sopa").children.length > 0) {
@@ -719,10 +796,6 @@ document
   .addEventListener("touchstart", function () {
     window.location.href = "../index.html";
   });
-
-/* document.addEventListener("touchstart", function (e) {
-  e.preventDefault(); 
-}, { passive: false }); */
 
 document.querySelector("#temas").style.position = "relative";
 document.querySelector("#temas").style.zIndex = "9999";
