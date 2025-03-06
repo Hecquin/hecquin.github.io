@@ -1,0 +1,196 @@
+html,
+html * {
+  box-sizing: border-box;
+}
+body {
+  background-image: url("../fondo\ sopa\ letras.png"); /* Reemplaza con la ruta correcta */
+  background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-attachment: fixed; /* Hace que el fondo permanezca fijo al hacer scroll */
+  background-color: rgba(255, 255, 255, 0.6); /* Blanco con 60% de opacidad */
+  background-blend-mode: overlay;
+  overflow-y: auto; /* Permite desplazamiento vertical si el contenido lo necesita */
+  height: 100%;
+}
+#contenedor-principal {
+  height: 100vh;
+  margin: 0 auto;
+  padding: 8px;
+  font-family: Arial, sans-serif;
+}
+#selector-tema {
+  height: 9vh;
+  margin-top: 8px;
+  border-radius: 20px;
+  border: 1px black solid;
+  display: flex;
+  background-color: #4caf50;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+}
+#temas {
+  padding: 8px;
+  margin-left: 10px;
+  touch-action: manipulation;
+  pointer-events: auto;
+}
+#temas.activo {
+  display: block;
+}
+#temas:hover,
+#temas:focus-within {
+  display: block;
+}
+#barra-navegacion {
+  border: 1px black solid;
+  margin-left: 8px;
+  background: #0a2744;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#barra-navegacion a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 2px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  touch-action: manipulation;
+}
+#barra-navegacion a:hover {
+  background: #3a5a7a;
+}
+#contenedor-sopa {
+  /* height: 65vh; */
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(14, 6.9%);
+  gap: 1px;
+  margin-top: 12px;
+  aspect-ratio: 1; /* Fuerza relación cuadrada */
+  background: #fff;
+  touch-action: none;
+}
+
+.celda-sopa {
+  grid-column: span 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: clamp(12px, 1.8vmin, 24px); /* Escala con el viewport */
+  font-weight: bold;
+  user-select: none;
+  aspect-ratio: 1; /* Celda cuadrada */
+}
+#estado {
+  height: 25vh;
+  margin-top: 12px;
+  background: #f0f0f0;
+  border-radius: 5px;
+}
+
+.palabras-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 4px;
+  margin-top: 1px;
+}
+
+.palabra-item {
+  padding: 5px 10px;
+  background: #4caf50;
+  color: white;
+  border-radius: 1px;
+  text-align: center;
+  font-size: 0.5em;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+/* Estilos para selección y palabras encontradas */
+.celda-sopa.seleccionada {
+  background: #b3e5fc !important;
+  transition: background 0.2s;
+  z-index: 2 !important; /* Asegurar que esté por encima de otros elementos */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  position: relative;
+}
+
+.celda-sopa.encontrada {
+  background: #c8e6c9;
+  position: relative;
+  z-index: 1;
+}
+.celda-sopa.seleccionada:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #2196f3;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.celda-sopa.encontrada::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  z-index: 2;
+  pointer-events: none;
+}
+/* Nuevo estilo para múltiples selecciones */
+.celda-sopa.encontrada.multiples {
+  background: linear-gradient(135deg, #c8e6c9 50%, #b3e5fc 50%);
+}
+.celda-sopa.encontrada.multiples::after {
+  border: 0px dashed #2196f3;
+  animation: none !important; /* Eliminar animación conflictiva */
+}
+.celda-sopa.seleccionada.invalida {
+  background: #ffcdd2 !important;
+  animation: shake 0.5s;
+}
+.palabra-item.encontrada {
+  background: #4caf50;
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(2px);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (min-width: 500px) {
+  #contenedor-principal {
+    width: 80vh;
+  }
+}
+@media (min-width: 900px) {
+  #contenedor-principal {
+    width: 70vh;
+  }
+}
+@media (min-width: 1200px) {
+  #contenedor-principal {
+    width: 65vh;
+  }
+}

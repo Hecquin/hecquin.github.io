@@ -1,0 +1,150 @@
+#contenedor-principal {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+#selector-tema {
+  margin: 20px 0;
+}
+
+#temas {
+  padding: 5px;
+  margin-left: 10px;
+}
+
+#contenedor-sopa {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr); /* Siempre 16 columnas */
+  gap: 2px;
+  background: #fff;
+  margin: 20px auto;
+  width: 100%; /* Ocupar todo el ancho disponible */
+  max-width: 100vw; /* Se adapta al ancho de la pantalla */
+  overflow: hidden; /* Evita desbordamientos */
+}
+
+.celda-sopa {
+  width: calc(100% / 16 - 2px); /* Ajuste dinámico */
+  height: calc(100vw / 16 - 3px); /* Siempre cuadradas */
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background: #f8f8f8;
+  user-select: none;
+  aspect-ratio: 1; /* Cuadradas siempre */
+  font-size: 1rem; /* Tamaño inicial del texto */
+  transition: background-color 0.2s;
+}
+/* 📌 Para pantallas menores a 734px */
+@media (max-width: 734px) {
+  .celda-sopa {
+    width: calc(100vw / 16 - 2px); /* Ajuste según la pantalla */
+    font-size: 0.8rem; /* Reduce el tamaño del texto */
+  }
+}
+
+/* 📌 Para pantallas menores a 500px (móviles más pequeños) */
+@media (max-width: 500px) {
+  .celda-sopa {
+    width: calc(100vw / 16 - 1px); /* Se adapta aún más */
+    font-size: 0.6rem; /* Reduce más el texto si es necesario */
+  }
+}
+#estado {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+#estado {
+  background: #f0f0f0;
+  border-radius: 5px;
+}
+
+.palabras-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+.palabra-item {
+  padding: 5px 10px;
+  background: #4caf50;
+  color: white;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 0.9em;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+/* Estilos para selección y palabras encontradas */
+.celda-sopa.seleccionada {
+  background: #b3e5fc !important;
+  transition: background 0.2s;
+  z-index: 2 !important; /* Asegurar que esté por encima de otros elementos */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  position: relative;
+}
+
+.celda-sopa.encontrada {
+  background: #c8e6c9;
+  position: relative;
+  z-index: 1;
+}
+.celda-sopa.seleccionada:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #2196f3;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.celda-sopa.encontrada::after {
+  content: "";
+  position: absolute;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border: 2px solid #4caf50;
+  border-radius: 5px;
+  left: -2px;
+  top: -2px;
+  z-index: 2;
+  pointer-events: none;
+}
+/* Nuevo estilo para múltiples selecciones */
+.celda-sopa.encontrada.multiples {
+  background: linear-gradient(135deg, #c8e6c9 50%, #b3e5fc 50%);
+}
+.celda-sopa.encontrada.multiples::after {
+  border: 2px dashed #2196f3;
+  animation: none !important; /* Eliminar animación conflictiva */
+}
+.celda-sopa.seleccionada.invalida {
+  background: #ffcdd2 !important;
+  animation: shake 0.5s;
+}
+.palabra-item.encontrada {
+  background: #4caf50;
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(2px);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
