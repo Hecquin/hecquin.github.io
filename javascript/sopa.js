@@ -21,7 +21,7 @@ let celdasSeleccionadas = [];
 let inicioX = null;
 let inicioY = null;
 // En sopa.js (al inicio del archivo)
-const palabrasPorTema = {
+/* const palabrasPorTema = {
   general: [
     "computadora",
     "teclado",
@@ -166,7 +166,21 @@ const palabrasPorTema = {
     "Tomate",
     "Zanahoria",
   ],
-};
+}; */
+fetch('./palabrasPorTema.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Error al cargar el archivo JSON');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Asigna el objeto data a tu variable global
+    palabrasPorTema = data;
+    // Inicia la aplicación, por ejemplo:
+    generarSopa();
+  })
+  .catch(error => console.error('Error:', error));
 
 //************************************************************************** */
 function generarSopa() {
