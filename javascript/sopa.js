@@ -167,7 +167,7 @@ let inicioY = null;
     "Zanahoria",
   ],
 }; */
-fetch('./palabrasPorTema.json')
+fetch('../datos/palabrasPorTema.json')
   .then(response => {
     if (!response.ok) {
       throw new Error('Error al cargar el archivo JSON');
