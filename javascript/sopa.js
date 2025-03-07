@@ -1,11 +1,18 @@
 // Configuración inicial
 const TAMANO_GRILLA = 14;
 const CANTIDAD_PALABRAS = 16;
-const TEMAS_SOPA = ["general", "verduras", "frutas"]; // Orden de temas
+const TEMAS_SOPA = [
+  "general",
+  "ciencias",
+  "historia",
+  "arte",
+  "frutas",
+  "verduras",
+]; // Orden de temas
 // Variables globales
 let indiceTemaActual = 0; // Empieza en "general"
 let palabrasRestantes = 0; // Se actualizará al generar la sopa
-
+let contadorPalabrasEncontradas = 1;
 let temaActual = TEMAS_SOPA[indiceTemaActual];
 let palabrasActuales = [];
 // Variables para el control de selección
@@ -163,24 +170,26 @@ const palabrasPorTema = {
 
 //************************************************************************** */
 function generarSopa() {
+  contadorPalabrasEncontradas = 1;
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
 
-  let grid = Array.from({ length: TAMANO_GRILLA }, () =>
+  gridModel = Array.from({ length: TAMANO_GRILLA }, () =>
     Array(TAMANO_GRILLA)
       .fill()
       .map(() => ({
         letra: "",
         encontrada: false,
+        claseExtra: "", // Propiedad para almacenar clases dinámicas
       }))
   );
 
   const palabras = obtenerPalabrasPorTema(temaActual);
   palabrasActuales = seleccionarPalabrasAleatorias(palabras);
-  colocarPalabras(grid, palabrasActuales);
+  colocarPalabras(gridModel, palabrasActuales);
   palabrasRestantes = palabrasActuales.length;
-  rellenarEspaciosVacios(grid);
-  renderizarSopa(grid);
+  rellenarEspaciosVacios(gridModel);
+  renderizarSopa(gridModel);
   mostrarPalabras(palabrasActuales);
 }
 
@@ -327,18 +336,21 @@ function renderizarSopa(grid) {
   const contenedor = document.getElementById("contenedor-sopa");
   contenedor.innerHTML = "";
 
-  // Calcula tamaño basado en el ancho del contenedor
-  const anchoContenedor = contenedor.offsetWidth;
   grid.forEach((fila, y) => {
     fila.forEach((celdaInfo, x) => {
       const celda = document.createElement("div");
-      celda.className = `celda-sopa ${
-        celdaInfo.encontrada ? "encontrada" : ""
-      }`;
+      // Incluye las clases base, "encontrada" y la claseExtra si existe
+      let clase = "celda-sopa";
+      if (celdaInfo.encontrada) {
+        clase += " encontrada";
+      }
+      if (celdaInfo.claseExtra) {
+        clase += " " + celdaInfo.claseExtra;
+      }
+      celda.className = clase;
       celda.textContent = celdaInfo.letra;
       celda.dataset.x = x;
       celda.dataset.y = y;
-
       contenedor.appendChild(celda);
     });
   });
@@ -349,8 +361,12 @@ function mostrarPalabras(palabras) {
   const contenedor = document.getElementById("estado");
   contenedor.innerHTML = "";
 
+  // Crear un elemento que muestre el tema actual en mayúsculas
+  const temaHeader = document.createElement("h3");
+  temaHeader.textContent = temaActual.toUpperCase();
+  contenedor.appendChild(temaHeader);
   // Crear un encabezado con el contador de palabras restantes
-  const encabezado = document.createElement("h3");
+  const encabezado = document.createElement("h4");
   encabezado.textContent = `Palabras a encontrar: ${palabrasRestantes}`;
   contenedor.appendChild(encabezado);
 
@@ -367,7 +383,6 @@ function mostrarPalabras(palabras) {
   contenedor.appendChild(lista);
 }
 
-
 //**************************************************************************** */
 function iniciarSeleccion(x, y) {
   seleccionando = true;
@@ -382,7 +397,7 @@ function moverSeleccion(x, y) {
   // Calcular dirección basada en la posición inicial y la posición actual
   const dx = x - inicioX;
   const dy = y - inicioY;
-  
+
   // Si apenas se ha seleccionado la primera letra, definimos la dirección con la segunda
   let direccion;
   if (celdasSeleccionadas.length === 1) {
@@ -407,24 +422,32 @@ function moverSeleccion(x, y) {
   for (let i = 0; i <= distancia; i++) {
     const nuevaX = inicioX + direccion.dx * i;
     const nuevaY = inicioY + direccion.dy * i;
-    if (nuevaX >= 0 && nuevaX < TAMANO_GRILLA && nuevaY >= 0 && nuevaY < TAMANO_GRILLA) {
+    if (
+      nuevaX >= 0 &&
+      nuevaX < TAMANO_GRILLA &&
+      nuevaY >= 0 &&
+      nuevaY < TAMANO_GRILLA
+    ) {
       nuevasCeldas.push({ x: nuevaX, y: nuevaY });
     }
   }
 
   // Construir la palabra parcial a partir de las celdas propuestas
   let palabraParcial = "";
-  nuevasCeldas.forEach(pos => {
-    const celda = document.querySelector(`.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`);
+  nuevasCeldas.forEach((pos) => {
+    const celda = document.querySelector(
+      `.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`
+    );
     if (celda) {
       palabraParcial += celda.textContent;
     }
   });
 
   // Verificar si la palabra parcial es un prefijo válido de alguna palabra de palabrasActuales
-  const esPrefijoValido = palabrasActuales.some(word =>
-    word.startsWith(palabraParcial) ||
-    word.startsWith([...palabraParcial].reverse().join(""))
+  const esPrefijoValido = palabrasActuales.some(
+    (word) =>
+      word.startsWith(palabraParcial) ||
+      word.startsWith([...palabraParcial].reverse().join(""))
   );
 
   // Si la palabra parcial no es válida (y se ha avanzado al menos dos letras), eliminamos la última celda
@@ -433,23 +456,27 @@ function moverSeleccion(x, y) {
   }
 
   // Actualizar la selección visual: quitar las que ya no están en nuevasCeldas
-  document.querySelectorAll(".celda-sopa.seleccionada").forEach(celda => {
+  document.querySelectorAll(".celda-sopa.seleccionada").forEach((celda) => {
     const cx = parseInt(celda.dataset.x);
     const cy = parseInt(celda.dataset.y);
-    if (!nuevasCeldas.some(pos => pos.x === cx && pos.y === cy)) {
+    if (!nuevasCeldas.some((pos) => pos.x === cx && pos.y === cy)) {
       celda.classList.remove("seleccionada");
       // También removemos de celdasSeleccionadas la posición eliminada
-      celdasSeleccionadas = celdasSeleccionadas.filter(pos => pos.x !== cx || pos.y !== cy);
+      celdasSeleccionadas = celdasSeleccionadas.filter(
+        (pos) => pos.x !== cx || pos.y !== cy
+      );
     }
   });
 
   // Marcar las nuevas celdas y actualizarlas en celdasSeleccionadas
-  nuevasCeldas.forEach(pos => {
-    const celda = document.querySelector(`.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`);
+  nuevasCeldas.forEach((pos) => {
+    const celda = document.querySelector(
+      `.celda-sopa[data-x="${pos.x}"][data-y="${pos.y}"]`
+    );
     if (celda && !celda.classList.contains("seleccionada")) {
       celda.classList.add("seleccionada");
       // Solo agregamos si no está ya en la lista
-      if (!celdasSeleccionadas.some(c => c.x === pos.x && c.y === pos.y)) {
+      if (!celdasSeleccionadas.some((c) => c.x === pos.x && c.y === pos.y)) {
         celdasSeleccionadas.push(pos);
       }
     }
@@ -464,7 +491,6 @@ function finalizarSeleccion() {
   celdasSeleccionadas = [];
 }
 //**************************************************************************** */
-
 
 // Función para agregar una celda a la selección
 
@@ -534,12 +560,22 @@ function verificarPalabra() {
   if (palabraEncontrada) {
     marcarCeldasEncontradas();
     marcarPalabraEncontrada(palabraEncontrada);
-    
+    // Asignar clase dinámica a las celdas de la palabra encontrada
+    const claseDinamica = `letra-sopa-${contadorPalabrasEncontradas}`;
+    celdasSeleccionadas.forEach(({ x, y }) => {
+      const celdaDOM = document.querySelector(
+        `.celda-sopa[data-x="${x}"][data-y="${y}"]`
+      );
+      if (celdaDOM) {
+        celdaDOM.classList.add(claseDinamica);
+      }
+    });
+    contadorPalabrasEncontradas++; // Incrementar contador para la siguiente palabra
     // Decrementar la cuenta de palabras restantes
     palabrasRestantes--;
-    
+
     // Actualizar el contenedor de estado (por ejemplo, la cabecera)
-    const encabezado = document.querySelector("#estado h3");
+    const encabezado = document.querySelector("#estado h4");
     if (encabezado) {
       encabezado.textContent = `Palabras a encontrar: ${palabrasRestantes}`;
     }
@@ -549,8 +585,8 @@ function verificarPalabra() {
       mostrarModalFin();
     }
 
-    const gridActual = obtenerGridActual();
-    renderizarSopa(gridActual);
+    /* const gridActual = obtenerGridActual();
+    renderizarSopa(gridActual); */
   }
 
   document.querySelectorAll(".celda-sopa.seleccionada").forEach((c) => {
@@ -630,7 +666,6 @@ function obtenerCeldasDireccionales(
 document
   .getElementById("contenedor-sopa")
   .addEventListener("mousedown", (e) => {
-   
     if (e.target.classList.contains("celda-sopa")) {
       iniciarSeleccion(
         parseInt(e.target.dataset.x),
@@ -657,7 +692,7 @@ document.getElementById("contenedor-sopa").addEventListener(
   "touchstart",
   function (e) {
     e.preventDefault();
-    
+
     const touch = e.touches[0];
     const rect = this.getBoundingClientRect();
 
@@ -690,7 +725,7 @@ document.addEventListener(
   "touchmove",
   function (e) {
     e.preventDefault();
-   
+
     if (!seleccionando) return;
 
     const touch = e.touches[0];
@@ -740,7 +775,6 @@ document
     window.location.href = "../index.html";
   });
 
-
 //************************************************************************** */
 function mostrarModalFin() {
   // Crear el fondo del modal
@@ -766,73 +800,105 @@ function mostrarModalFin() {
   modalContent.style.maxWidth = "90%";
   modalContent.style.boxShadow = "0 2px 10px rgba(0,0,0,0.3)";
 
-  const mensaje = document.createElement("h2");
-  mensaje.textContent = "¡Felicidades, has encontrado todas las palabras!";
-  modalContent.appendChild(mensaje);
+  // Crear el mensaje y botones según si se terminó el último tema o no
+  let mensaje = document.createElement("h2");
+  if (indiceTemaActual === TEMAS_SOPA.length - 1) {
+    // Caso en el que se terminó el último tema
+    mensaje.textContent = "¡Felicidades, has terminado todos los temas!";
+    modalContent.appendChild(mensaje);
 
-  // Botón para continuar al siguiente tema
-  const btnContinuar = document.createElement("button");
-  btnContinuar.textContent = "Continuar";
-  btnContinuar.style.margin = "10px";
-  btnContinuar.style.padding = "10px 20px";
-  btnContinuar.style.background = "#4caf50";
-  btnContinuar.style.color = "#fff";
-  btnContinuar.style.border = "none";
-  btnContinuar.style.borderRadius = "4px";
-  btnContinuar.style.cursor = "pointer";
-  modalContent.appendChild(btnContinuar);
+    // Botón único para regresar al tema general
+    const btnRegresar = document.createElement("button");
+    btnRegresar.textContent = "Regresar";
+    btnRegresar.style.margin = "10px";
+    btnRegresar.style.padding = "10px 20px";
+    btnRegresar.style.background = "#4caf50";
+    btnRegresar.style.color = "#fff";
+    btnRegresar.style.border = "none";
+    btnRegresar.style.borderRadius = "4px";
+    btnRegresar.style.cursor = "pointer";
+    modalContent.appendChild(btnRegresar);
 
-  // Botón para quedarse en el tema general
-  const btnNo = document.createElement("button");
-  btnNo.textContent = "Volver a General";
-  btnNo.style.margin = "10px";
-  btnNo.style.padding = "10px 20px";
-  btnNo.style.background = "#f44336";
-  btnNo.style.color = "#fff";
-  btnNo.style.border = "none";
-  btnNo.style.borderRadius = "4px";
-  btnNo.style.cursor = "pointer";
-  modalContent.appendChild(btnNo);
+    // Agregar eventos para dispositivos táctiles y mouse
+    btnRegresar.addEventListener("click", () => {
+      indiceTemaActual = 0; // Volvemos al tema general
+      temaActual = TEMAS_SOPA[indiceTemaActual];
+      generarSopa();
+      document.body.removeChild(modal);
+    });
+    btnRegresar.addEventListener("touchstart", () => {
+      indiceTemaActual = 0;
+      temaActual = TEMAS_SOPA[indiceTemaActual];
+      generarSopa();
+      document.body.removeChild(modal);
+    });
+  } else {
+    // Caso en el que aún hay temas pendientes
+    mensaje.textContent = "¡Felicidades, has encontrado todas las palabras!";
+    modalContent.appendChild(mensaje);
+
+    // Botón para continuar al siguiente tema
+    const btnContinuar = document.createElement("button");
+    btnContinuar.textContent = "Continuar";
+    btnContinuar.style.margin = "10px";
+    btnContinuar.style.padding = "10px 20px";
+    btnContinuar.style.background = "#4caf50";
+    btnContinuar.style.color = "#fff";
+    btnContinuar.style.border = "none";
+    btnContinuar.style.borderRadius = "4px";
+    btnContinuar.style.cursor = "pointer";
+    modalContent.appendChild(btnContinuar);
+
+    // Botón para volver al tema general
+    const btnNo = document.createElement("button");
+    btnNo.textContent = "Volver a General";
+    btnNo.style.margin = "10px";
+    btnNo.style.padding = "10px 20px";
+    btnNo.style.background = "#f44336";
+    btnNo.style.color = "#fff";
+    btnNo.style.border = "none";
+    btnNo.style.borderRadius = "4px";
+    btnNo.style.cursor = "pointer";
+    modalContent.appendChild(btnNo);
+
+    // Eventos para botón Continuar (siguiente tema)
+    btnContinuar.addEventListener("click", continuar);
+    btnContinuar.addEventListener("touchstart", continuar);
+    function continuar() {
+      indiceTemaActual = (indiceTemaActual + 1) % TEMAS_SOPA.length;
+      temaActual = TEMAS_SOPA[indiceTemaActual];
+      generarSopa();
+      document.body.removeChild(modal);
+    }
+    // Eventos para botón Volver a General
+    btnNo.addEventListener("click", volverGeneral);
+    btnNo.addEventListener("touchstart", volverGeneral);
+    function volverGeneral() {
+      indiceTemaActual = 0;
+      temaActual = TEMAS_SOPA[indiceTemaActual];
+      generarSopa();
+      document.body.removeChild(modal);
+    }
+  }
 
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
-
-  // Acción para continuar: pasar al siguiente tema en TEMAS_SOPA
-  btnContinuar.addEventListener("click", () => {
-    // Actualizar índice de tema
-    indiceTemaActual = (indiceTemaActual + 1) % TEMAS_SOPA.length;
-    temaActual = TEMAS_SOPA[indiceTemaActual];
-    // Regenerar la sopa con el nuevo tema
-    generarSopa();
-    // Remover el modal
-    document.body.removeChild(modal);
-  });
-  btnContinuar.addEventListener("click", continuar);
-  btnContinuar.addEventListener("touchstart", continuar);
-  
-  // Acción para volver al tema general
-  function continuar() {
-    // Actualizar índice de tema
-    indiceTemaActual = (indiceTemaActual + 1) % TEMAS_SOPA.length;
-    temaActual = TEMAS_SOPA[indiceTemaActual];
-    // Regenerar la sopa con el nuevo tema
-    generarSopa();
-    // Remover el modal
-    document.body.removeChild(modal);
-  }
-  
-  // Acción para volver al tema general
-  btnNo.addEventListener("click", volverGeneral);
-  btnNo.addEventListener("touchstart", volverGeneral);
-  
-  function volverGeneral() {
-    indiceTemaActual = 0; // El índice 0 es "general"
-    temaActual = TEMAS_SOPA[indiceTemaActual];
-    generarSopa();
-    document.body.removeChild(modal);
-  }
-  
 }
 
+function asignarClaseParaPalabra(celdas, indice) {
+  const claseDinamica = `letra-sopa-${indice}`;
+  celdas.forEach(({ x, y }) => {
+    // Asigna la clase extra al objeto de la grilla
+    const celdaDOM = document.querySelector(
+      `.celda-sopa[data-x="${x}"][data-y="${y}"]`
+    );
+    if (celdaDOM) {
+      celdaDOM.classList.add(claseDinamica);
+    }
+    // Aquí deberías también guardar esa clase en tu modelo si tienes acceso a él.
+    gridModel[y][x].claseExtra = claseDinamica;
+  });
+}
+let gridModel = [];
 // Inicialización
 generarSopa();
