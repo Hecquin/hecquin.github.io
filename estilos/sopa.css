@@ -31,19 +31,7 @@ body {
   padding: 10px;
   position: relative;
 }
-#temas {
-  padding: 8px;
-  margin-left: 10px;
-  touch-action: manipulation;
-  pointer-events: auto;
-}
-#temas.activo {
-  display: block;
-}
-#temas:hover,
-#temas:focus-within {
-  display: block;
-}
+
 #barra-navegacion {
   border: 1px black solid;
   margin-left: 8px;
