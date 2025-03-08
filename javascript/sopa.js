@@ -427,33 +427,33 @@ function verificarPalabra() {
   );
 
   if (palabraEncontrada) {
-    marcarCeldasEncontradas();
-    marcarPalabraEncontrada(palabraEncontrada);
-    contadorPalabrasEncontradas++;
-
     if (!palabrasEncontradas.includes(palabraEncontrada)) {
       palabrasEncontradas.push(palabraEncontrada);
       palabrasRestantes--;
-    }
 
-    const claseDinamica = `letra-sopa-${contadorPalabrasEncontradas}`;
-    celdasSeleccionadas.forEach(({ x, y }) => {
-      const celdaDOM = document.querySelector(
-        `.celda-sopa[data-x="${x}"][data-y="${y}"]`
-      );
-      if (celdaDOM) {
-        celdaDOM.classList.add(claseDinamica);
+      marcarCeldasEncontradas();
+      marcarPalabraEncontrada(palabraEncontrada);
+      contadorPalabrasEncontradas++;
+  
+      const claseDinamica = `letra-sopa-${contadorPalabrasEncontradas}`;
+      celdasSeleccionadas.forEach(({ x, y }) => {
+        const celdaDOM = document.querySelector(
+          `.celda-sopa[data-x="${x}"][data-y="${y}"]`
+        );
+        if (celdaDOM) {
+          celdaDOM.classList.add(claseDinamica);
+        }
+      });
+      // Actualizar el contenedor de estado (por ejemplo, la cabecera)
+      const encabezado = document.querySelector("#estado h4");
+      if (encabezado) {
+        encabezado.textContent = `Palabras a encontrar: ${palabrasRestantes}`;
       }
-    });
-    // Actualizar el contenedor de estado (por ejemplo, la cabecera)
-    const encabezado = document.querySelector("#estado h4");
-    if (encabezado) {
-      encabezado.textContent = `Palabras a encontrar: ${palabrasRestantes}`;
-    }
-
-    // Verificar si se han encontrado todas las palabras
-    if (palabrasRestantes === 0) {
-      mostrarModalFin();
+  
+      // Verificar si se han encontrado todas las palabras
+      if (palabrasRestantes === 0) {
+        mostrarModalFin();
+      }
     }
   }
 
