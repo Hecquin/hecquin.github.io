@@ -1,7 +1,37 @@
+html,
+html * {
+  box-sizing: border-box;
+}
+body {
+    background-image: url("../fondo-inicio.webp"); /* Reemplaza con la ruta correcta */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Hace que el fondo permanezca fijo al hacer scroll */
+    background-color: rgba(255, 255, 255, 0.6); /* Blanco con 60% de opacidad */
+    background-blend-mode: overlay;
+    overflow-y: auto; /* Permite desplazamiento vertical si el contenido lo necesita */
+    height: 100%;
+  }
+#contenedor-pagina{
+    height: 100vh;
+    width: auto;
+    z-index: 2;
+    background-color: #e7fa93;
+   align-content: center;
+   margin: auto;
+   border: 1px black solid;
+}
 /* Estilos específicos para la página de inicio */
 .cabecera-principal {
     background: #2c3e50;
-    padding: 1rem;
+    padding: 4px;
+    margin: 4px;
+    width: 96%;
+    height: 8%;
+    justify-content: center;
+    align-content: center;
+   
 }
 
 .menu-navegacion ul {
@@ -10,7 +40,7 @@
     margin: 0;
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 2px;
 }
 
 .menu-navegacion a {
@@ -28,21 +58,26 @@
 
 .contenido-principal {
     text-align: center;
-    padding: 2rem;
+    padding: 4px;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 4px;
+    width: 96%;
+    height: 68%;
 }
-
+.bienvenida{
+    height: 93%;
+}
 .bienvenida h1 {
     color: #2c3e50;
-    margin-bottom: 1rem;
+    margin-bottom: 4px;
 }
 
 .destacado {
-    background: #ecf0f1;
-    padding: 2rem;
+    background: #84e1f8;
+    padding: 4px;
     border-radius: 8px;
     margin-top: 2rem;
+    height: 45%;
 }
 
 .boton-jugar {
@@ -52,7 +87,7 @@
     padding: 0.8rem 1.5rem;
     text-decoration: none;
     border-radius: 5px;
-    margin-top: 1rem;
+    margin-top: 4px;
     transition: background 0.3s ease;
 }
 
@@ -65,7 +100,24 @@
     padding: 1rem;
     background: #2c3e50;
     color: white;
-    position: fixed;
+    position: relative;
     bottom: 0;
-    width: 100%;
+    width: 96%;
+    margin: 4px;
+    height: 20%;
+}
+@media (min-width: 500px){
+#contenedor-pagina{
+    width: 80vh;
+}
+}
+@media (min-width: 900px){
+    #contenedor-pagina{
+        width: 70vh;
+    }
+}
+@media (min-width: 1200px){
+    #contenedor-pagina{
+        width: 65vh;
+    }
 }
