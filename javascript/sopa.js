@@ -20,167 +20,22 @@ let seleccionando = false;
 let celdasSeleccionadas = [];
 let inicioX = null;
 let inicioY = null;
-// En sopa.js (al inicio del archivo)
-/* const palabrasPorTema = {
-  general: [
-    "computadora",
-    "teclado",
-    "ventana",
-    "libro",
-    "mesa",
-    "parlante",
-    "silla",
-    "lapiz",
-    "cuaderno",
-    "ventilador",
-    "lampara",
-    "puerta",
-    "espejo",
-    "reloj",
-    "telefono",
-    "carpeta",
-    "archivo",
-    "cuadro",
-    "celular",
-    "trapera",
-  ],
-  ciencias: [
-    "biologia",
-    "quimica",
-    "fisica",
-    "astronomia",
-    "genetica",
-    "ecologia",
-    "geologia",
-    "matematicas",
-    "experimento",
-    "microscopio",
-    "laboratorio",
-    "molecula",
-    "celula",
-    "energia",
-    "termometro",
-  ],
-  historia: [
-    "civilizacion",
-    "imperio",
-    "revolucion",
-    "guerra",
-    "monarquia",
-    "descubrimiento",
-    "colonizacion",
-    "independencia",
-    "edadmedia",
-    "renacimiento",
-    "republica",
-    "tratado",
-    "batalla",
-    "arqueologia",
-    "artefacto",
-  ],
-  arte: [
-    "pintura",
-    "escultura",
-    "arquitectura",
-    "literatura",
-    "musica",
-    "danza",
-    "fotografia",
-    "cinematografia",
-    "surrealismo",
-    "impresionismo",
-    "renacimiento",
-    "acuarela",
-    "oleo",
-    "grabado",
-    "museo",
-  ],
-  frutas: [
-    "Albaricoque",
-    "arándano",
-    "carambola",
-    "cereza",
-    "ciruela",
-    "coco",
-    "dátil",
-    "frambuesa",
-    "fresa",
-    "granada",
-    "grosella",
-    "higo",
-    "kiwi",
-    "lima",
-    "limón",
-    "mandarina",
-    "mango",
-    "manzana",
-    "maracuyá",
-    "melocotón",
-    "melón",
-    "membrillo",
-    "mora",
-    "naranja",
-    "nectarina",
-    "papaya",
-    "pera",
-    "piña",
-    "plátano",
-    "pomelo",
-    "rábano",
-    "remolacha",
-    "rúcula",
-    "sandía",
-    "tirabeques",
-    "uva",
-  ],
-  verduras: [
-    "Acelga",
-    "Aguacate",
-    "Ajo",
-    "Alcachofa",
-    "Apio",
-    "Berenjena",
-    "Brócoli",
-    "Calabacín",
-    "Calabaza",
-    "Cardo",
-    "Cebolla",
-    "Champiñón",
-    "Col",
-    "Coliflor",
-    "Endibia",
-    "Escarola",
-    "Espárrago",
-    "Espinacas",
-    "Guindilla",
-    "Guisante",
-    "Haba",
-    "Lechuga",
-    "Lombarda",
-    "Nabo",
-    "Patata",
-    "Pepino",
-    "Pimiento",
-    "Puerro",
-    "Setas",
-    "Tomate",
-    "Zanahoria",
-  ],
-}; */
-fetch('../datos/palabrasPorTema.json')
-  .then(response => {
+let palabrasEncontradas = [];
+
+fetch("../datos/palabrasPorTema.json")
+  .then((response) => {
     if (!response.ok) {
-      throw new Error('Error al cargar el archivo JSON');
+      throw new Error("Error al cargar el archivo JSON");
     }
     return response.json();
   })
-  .then(data => {
+  .then((data) => {
     // Asigna el objeto data a tu variable global
     palabrasPorTema = data;
     // Inicia la aplicación, por ejemplo:
     generarSopa();
   })
-  .catch(error => console.error('Error:', error));
+  .catch((error) => console.error("Error:", error));
 
 //************************************************************************** */
 function generarSopa() {
@@ -574,7 +429,13 @@ function verificarPalabra() {
   if (palabraEncontrada) {
     marcarCeldasEncontradas();
     marcarPalabraEncontrada(palabraEncontrada);
-    // Asignar clase dinámica a las celdas de la palabra encontrada
+    contadorPalabrasEncontradas++;
+
+    if (!palabrasEncontradas.includes(palabraEncontrada)) {
+      palabrasEncontradas.push(palabraEncontrada);
+      palabrasRestantes--;
+    }
+
     const claseDinamica = `letra-sopa-${contadorPalabrasEncontradas}`;
     celdasSeleccionadas.forEach(({ x, y }) => {
       const celdaDOM = document.querySelector(
@@ -584,10 +445,6 @@ function verificarPalabra() {
         celdaDOM.classList.add(claseDinamica);
       }
     });
-    contadorPalabrasEncontradas++; // Incrementar contador para la siguiente palabra
-    // Decrementar la cuenta de palabras restantes
-    palabrasRestantes--;
-
     // Actualizar el contenedor de estado (por ejemplo, la cabecera)
     const encabezado = document.querySelector("#estado h4");
     if (encabezado) {
@@ -598,9 +455,6 @@ function verificarPalabra() {
     if (palabrasRestantes === 0) {
       mostrarModalFin();
     }
-
-    /* const gridActual = obtenerGridActual();
-    renderizarSopa(gridActual); */
   }
 
   document.querySelectorAll(".celda-sopa.seleccionada").forEach((c) => {
