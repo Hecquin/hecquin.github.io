@@ -19,7 +19,18 @@
       "archivo",
       "cuadro",
       "celular",
-      "trapera"
+      "trapera",
+      "matero",
+      "comedor",
+      "cuchill",
+      "estufa",
+      "control",
+      "lavaplatos",
+      "pantalla",
+      "artesania",
+      "cobija",
+      "plantilla"
+
     ],
     "ciencias": [
       "biologia",
@@ -36,7 +47,18 @@
       "molecula",
       "celula",
       "energia",
-      "termometro"
+      "termometro",
+      "conocimiento",
+      "sabiduria",
+      "sapiencia",
+      "grafica",
+      "biofisica",
+      "biodiversidad",
+      "hipotesis",
+      "eureka",
+      "fotosintesis",
+      "microfono"
+
     ],
     "historia": [
       "civilizacion",
@@ -48,12 +70,28 @@
       "colonizacion",
       "independencia",
       "edadmedia",
-      "renacimiento",
       "republica",
       "tratado",
       "batalla",
       "arqueologia",
-      "artefacto"
+      "artefacto",
+      "acaudillar",
+      "acropolis",
+      "paleografia",
+      "historiografia",
+      "memoria",
+      "leyenda",
+      "antropologia",
+      "absolutismo",
+      "amnistia",
+      "relato",
+      "alcabala",
+      "amazona",
+      "anarquia",
+      "aristocracia",
+      "autocracia",
+      "burguesia"
+
     ],
     "arte": [
       "pintura",
@@ -70,7 +108,18 @@
       "acuarela",
       "oleo",
       "grabado",
-      "museo"
+      "museo",
+      "material",
+      "tecnica",
+      "barroco",
+      "abstracto",
+      "estilo",
+      "diseño",
+      "artista",
+      "orfebreria",
+      "ceramica",
+      "monumento"
+
     ],
     "frutas": [
       "Albaricoque",
@@ -142,6 +191,60 @@
       "Setas",
       "Tomate",
       "Zanahoria"
+    ],
+    "costura":[
+      "coser",
+      "cremallera",
+      "retal",
+      "corte",
+      "broche",
+      "entretela",
+      "guata",
+      "hilvanar",
+      "pespunte",
+      "puntada",
+      "dedal",
+      "hojal",
+      "modista",
+      "sastre",
+      "hilo",
+      "tejido",
+      "tijeras",
+      "modelo",
+      "abotonar",
+      "accesorio",
+      "adorno",
+      "afelpado",
+      "ajuar",
+      "deslustre"
+    ],
+    "sentimientos":[
+      "Egoísmo",
+      "Indignación",
+      "Ira",
+      "Empatía",
+      "Superioridad",
+      "Tristeza",
+      "Felicidad",
+      "Gratitud",
+      "Culpa",
+      "Satisfacción",
+      "Solidaridad",
+      "Miedo",
+      "Euforia",
+      "Rabia",
+      "Remordimiento",
+      "Respeto",
+      "Esperanza",
+      "Amor",
+      "Alegría",
+      "Entusiasmo",
+      "Generosidad",
+      "Afecto",
+      "Placer",
+      "Gozo",
+      "Impotencia"
     ]
-  }
+
+}
   

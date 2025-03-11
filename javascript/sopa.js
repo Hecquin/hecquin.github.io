@@ -8,6 +8,8 @@ const TEMAS_SOPA = [
   "arte",
   "frutas",
   "verduras",
+  "costura",
+  "sentimientos"
 ]; // Orden de temas
 // Variables globales
 let indiceTemaActual = 0; // Empieza en "general"
